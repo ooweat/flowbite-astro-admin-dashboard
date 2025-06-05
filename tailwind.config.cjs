@@ -7,7 +7,7 @@ module.exports = {
 		'./node_modules/flowbite/**/*.js',
 	],
 
-	darkMode: 'class',
+	/* darkMode: 'class', */
 
 	theme: {
 		extend: {
@@ -27,6 +27,7 @@ module.exports = {
 			},
 			fontFamily: {
 				sans: [
+					'Spoqa Han Sans Neo',
 					'Inter',
 					'ui-sans-serif',
 					'system-ui',
@@ -44,6 +45,7 @@ module.exports = {
 					'Noto Color Emoji',
 				],
 				body: [
+					'Spoqa Han Sans Neo',
 					'Inter',
 					'ui-sans-serif',
 					'system-ui',

@@ -1,16 +1,318 @@
 ---
 /* eslint max-lines: 'off' */
 
-import { asset } from '../lib/data.js';
+import {asset} from '../lib/data.js';
 
 import ColorModeSwitcher from '../components/ColorModeSwitcher.astro';
 import GitHubButton from '../components/GitHubButton.astro';
 import SearchInput from '../components/SearchInput.astro';
----
+import MainLogo from '../assets/ubcn-logo.png';
+import Favicon from '../assets/favicon.ico';
 
-<nav
-	class="fixed z-30 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700"
->
+import DefaultProfile from '../assets/user-profile.svg?raw';
+import DropdownDown from '../assets/dropdown-down.svg?raw';
+
+---
+<!-- 메뉴 스타일 0 -->
+<nav class="bg-white border-gray-200 dark:border-gray-600 dark:bg-gray-900">
+	<div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
+		<a href="https://ubcn.co.kr" class="flex items-center space-x-3 rtl:space-x-reverse"> 
+			<img src={Favicon} class="h-8" alt="Logo"/>
+			<span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">LOGO</span> 
+		</a>
+		<div class="flex items-center md:order-2 space-x-1 md:space-x-2 rtl:space-x-reverse">
+			<!-- Profile -->
+			<div class="flex items-center ml-3">
+				<div>
+					<button type="button"
+									class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+									id="user-menu-button-2" aria-expanded="false" data-dropdown-toggle="dropdown-2">
+						<span class="sr-only">Open user menu</span>
+						<div set:html={DefaultProfile} class="w-8 h-8 rounded-full"/>
+					</button>
+				</div>
+
+				<!-- Dropdown menu -->
+				<div
+					class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
+					id="dropdown-2" data-popper-placement="bottom"
+					style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(1568px, 58px);">
+					<div class="px-4 py-3" role="none">
+						<p class="text-sm text-gray-900 dark:text-white" role="none">테스트</p>
+						<p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">test@ubcn.co.kr</p>
+					</div>
+					<ul class="py-1" role="none">
+						<li><a href="#"
+									 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+									 role="menuitem">개인정보</a></li>
+						<li><a href="#"
+									 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+									 role="menuitem">로그아웃</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div id="mega-menu-full"
+				 class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1">
+			<ul
+				class="flex flex-col mt-4 font-medium md:flex-row md:mt-0 md:space-x-8 rtl:space-x-reverse">
+				<li>
+					<a href="#"
+						 class="block py-2 px-3 text-gray-900 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700"
+						 aria-current="page">홈</a>
+				</li>
+				<li>
+					<button id="mega-menu-full-dropdown-button" data-collapse-toggle="mega-menu-full-dropdown"
+									class="flex items-center justify-between w-full py-2 px-3 font-medium text-gray-900 border-b border-gray-100 md:w-auto hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">
+						결제내역 조회
+						<div set:html={DropdownDown} class="ml-1"/>
+					</button>
+				</li>
+				<!-- 고객센터 연결 -->
+				<li>
+					<a href="http://pf.kakao.com/_Ihxlbj/chat" title="고객센터 연결"
+						 class="block py-2 px-3 text-gray-900 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">고객센터</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div id="mega-menu-full-dropdown"
+			 class="mt-1 bg-white border-gray-200 shadow-xs border-y dark:bg-gray-800 dark:border-gray-600 hidden">
+		<div
+			class="grid max-w-screen-xl px-4 py-5 mx-auto text-gray-900 dark:text-white sm:grid-cols-2 md:grid-cols-3 md:px-6">
+			<ul aria-labelledby="mega-menu-full-dropdown-button">
+				<li>
+					<a href="#" class="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+						<div class="font-semibold">Online Stores</div>
+						<span class="text-sm text-gray-500 dark:text-gray-400">Connect with third-party tools that you're already using.</span>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+						<div class="font-semibold">Segmentation</div>
+						<span class="text-sm text-gray-500 dark:text-gray-400">Connect with third-party tools that you're already using.</span>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+						<div class="font-semibold">Marketing CRM</div>
+						<span class="text-sm text-gray-500 dark:text-gray-400">Connect with third-party tools that you're already using.</span>
+					</a>
+				</li>
+			</ul>
+			<ul>
+				<li>
+					<a href="#" class="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+						<div class="font-semibold">Online Stores</div>
+						<span class="text-sm text-gray-500 dark:text-gray-400">Connect with third-party tools that you're already using.</span>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+						<div class="font-semibold">Segmentation</div>
+						<span class="text-sm text-gray-500 dark:text-gray-400">Connect with third-party tools that you're already using.</span>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+						<div class="font-semibold">Marketing CRM</div>
+						<span class="text-sm text-gray-500 dark:text-gray-400">Connect with third-party tools that you're already using.</span>
+					</a>
+				</li>
+			</ul>
+			<ul class="hidden md:block">
+				<li>
+					<a href="#" class="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+						<div class="font-semibold">Audience Management</div>
+						<span class="text-sm text-gray-500 dark:text-gray-400">Connect with third-party tools that you're already using.</span>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+						<div class="font-semibold">Creative Tools</div>
+						<span class="text-sm text-gray-500 dark:text-gray-400">Connect with third-party tools that you're already using.</span>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+						<div class="font-semibold">Marketing Automation</div>
+						<span class="text-sm text-gray-500 dark:text-gray-400">Connect with third-party tools that you're already using.</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+
+<!-- 메뉴 스타일 1 -->
+<!--<nav class="bg-white border-gray-200 dark:bg-gray-900">
+	<div class="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto p-4">
+		<a href="https://ubcn.co.kr" class="flex items-center space-x-3 rtl:space-x-reverse">
+			<img src={Favicon} class="h-8" alt="Flowbite Logo"/>
+			<span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">LOGO</span>
+		</a>
+		<div class="flex items-center md:order-2 space-x-1 md:space-x-2 rtl:space-x-reverse">
+			&lt;!&ndash; Profile &ndash;&gt;
+			<div class="flex items-center ml-3">
+				<div>
+					<button
+						type="button"
+						class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+						id="user-menu-button-2"
+						aria-expanded="false"
+						data-dropdown-toggle="dropdown-2"
+					>
+						<span class="sr-only">Open user menu</span>
+						<div set:html={DefaultProfile} class="w-8 h-8 rounded-full"/>
+					</button>
+				</div>
+				&lt;!&ndash; Dropdown menu &ndash;&gt;
+				<div
+					class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
+					id="dropdown-2"
+				>
+					<div class="px-4 py-3" role="none">
+						<p class="text-sm text-gray-900 dark:text-white" role="none">
+							테스트
+						</p>
+						<p
+							class="text-sm font-medium text-gray-900 truncate dark:text-gray-300"
+							role="none"
+						>
+							test@ubcn.co.kr
+						</p>
+					</div>
+					<ul class="py-1" role="none">
+						<li>
+							<a
+								href="#"
+								class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+								role="menuitem">개인정보</a
+							>
+						</li>
+						<li>
+							<a
+								href="#"
+								class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+								role="menuitem">로그아웃</a
+							>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		&lt;!&ndash; 대분류 메뉴 &ndash;&gt;
+		<div id="mega-menu"
+				 class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1">
+			<ul
+				class="flex flex-col mt-4 font-medium md:flex-row md:mt-0 md:space-x-8 rtl:space-x-reverse">
+				<li>
+					<a href="#" class="block py-2 px-3 text-blue-600 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-blue-500 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700" aria-current="page">Home</a>
+				</li>
+				<li>
+					<button id="mega-menu-dropdown-button" data-dropdown-toggle="mega-menu-dropdown"
+									class="flex items-center justify-between w-full py-2 px-3 font-medium text-gray-900 border-b border-gray-100 md:w-auto hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">
+						결제조회
+						<div set:html={DropdownDown}/>
+					</button>
+					<div id="mega-menu-dropdown"
+							 class="absolute z-10 grid hidden w-auto grid-cols-2 text-sm bg-white border border-gray-100 rounded-lg shadow-md dark:border-gray-700 md:grid-cols-3 dark:bg-gray-700">
+						<div class="p-4 pb-0 text-gray-900 md:pb-4 dark:text-white">
+							<ul class="space-y-4" aria-labelledby="mega-menu-dropdown-button">
+								<li>
+									<a href="#"
+										 class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
+										About Us
+									</a>
+								</li>
+								<li>
+									<a href="#"
+										 class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
+										Library
+									</a>
+								</li>
+								<li>
+									<a href="#"
+										 class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
+										Resources
+									</a>
+								</li>
+								<li>
+									<a href="#"
+										 class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
+										Pro Version
+									</a>
+								</li>
+							</ul>
+						</div>
+						<div class="p-4 pb-0 text-gray-900 md:pb-4 dark:text-white">
+							<ul class="space-y-4">
+								<li>
+									<a href="#"
+										 class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
+										Blog
+									</a>
+								</li>
+								<li>
+									<a href="#"
+										 class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
+										Newsletter
+									</a>
+								</li>
+								<li>
+									<a href="#"
+										 class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
+										Playground
+									</a>
+								</li>
+								<li>
+									<a href="#"
+										 class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
+										License
+									</a>
+								</li>
+							</ul>
+						</div>
+						<div class="p-4">
+							<ul class="space-y-4">
+								<li>
+									<a href="#"
+										 class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
+										Contact Us
+									</a>
+								</li>
+								<li>
+									<a href="#"
+										 class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
+										Support Center
+									</a>
+								</li>
+								<li>
+									<a href="#"
+										 class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
+										Terms
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</li>
+				<li>
+					<a href="#"
+						 class="block py-2 px-3 text-gray-900 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">Team</a>
+				</li>
+				<li>
+					<a href="#"
+						 class="block py-2 px-3 text-gray-900 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>-->
+
+<!-- 메뉴 스타일 2 -->
+<!--<nav class="fixed z-30 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
 	<div class="px-3 py-3 lg:px-5 lg:pl-3">
 		<div class="flex items-center justify-between">
 			<div class="flex items-center justify-start">
@@ -45,30 +347,29 @@ import SearchInput from '../components/SearchInput.astro';
 				</button>
 				<a href="/" class="flex ml-2 md:mr-24">
 					<img
-						src={asset('images/logo.svg')}
+						src={MainLogo.src}
 						class="h-8 mr-3"
-						alt="FlowBite Logo"
+						alt="UBCn Logo"
 					/>
 					<span
 						class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white"
-						>Flowbite</span
+						></span
 					>
 				</a>
 
-				<SearchInput />
+				&lt;!&ndash;<SearchInput />&ndash;&gt;
 			</div>
-
 			<div class="flex items-center">
-				<GitHubButton repository="themesberg/flowbite-astro-admin-dashboard" />
+				&lt;!&ndash;<GitHubButton repository="themesberg/flowbite-astro-admin-dashboard" />&ndash;&gt;
 
-				<!-- Search mobile -->
+				&lt;!&ndash; Search mobile &ndash;&gt;
 				<button
 					id="toggleSidebarMobileSearch"
 					type="button"
 					class="p-2 text-gray-500 rounded-lg lg:hidden hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
 				>
 					<span class="sr-only">Search</span>
-					<!-- Search icon -->
+					&lt;!&ndash; Search icon &ndash;&gt;
 					<svg
 						class="w-6 h-6"
 						fill="currentColor"
@@ -81,7 +382,7 @@ import SearchInput from '../components/SearchInput.astro';
 					>
 				</button>
 
-				<!-- Dropdown menu -->
+				&lt;!&ndash; Dropdown menu &ndash;&gt;
 				<div
 					id="dropdownNavbar"
 					class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
@@ -116,19 +417,19 @@ import SearchInput from '../components/SearchInput.astro';
 						<a
 							href="#"
 							class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
-							>Sign out</a
+							>로그아웃</a
 						>
 					</div>
 				</div>
 
-				<!-- Notifications -->
-				<button
+				&lt;!&ndash; Notifications &ndash;&gt;
+	&lt;!&ndash;			<button
 					type="button"
 					data-dropdown-toggle="notification-dropdown"
 					class="p-2 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700"
 				>
 					<span class="sr-only">View notifications</span>
-					<!-- Bell icon -->
+					&lt;!&ndash; Bell icon &ndash;&gt;
 					<svg
 						class="w-6 h-6"
 						fill="currentColor"
@@ -138,8 +439,8 @@ import SearchInput from '../components/SearchInput.astro';
 							d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"
 						></path></svg
 					>
-				</button>
-				<!-- Dropdown menu -->
+				</button>&ndash;&gt;
+				&lt;!&ndash; Dropdown menu &ndash;&gt;
 				<div
 					class="z-20 z-50 hidden max-w-sm my-4 overflow-hidden text-base list-none bg-white divide-y divide-gray-100 rounded shadow-lg dark:divide-gray-600 dark:bg-gray-700"
 					id="notification-dropdown"
@@ -378,14 +679,14 @@ import SearchInput from '../components/SearchInput.astro';
 						</div>
 					</a>
 				</div>
-				<!-- Apps -->
+				&lt;!&ndash; Apps &ndash;&gt;
 				<button
 					type="button"
 					data-dropdown-toggle="apps-dropdown"
 					class="hidden p-2 text-gray-500 rounded-lg sm:flex hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700"
 				>
 					<span class="sr-only">View notifications</span>
-					<!-- Icon -->
+					&lt;!&ndash; Icon &ndash;&gt;
 					<svg
 						class="w-6 h-6"
 						fill="currentColor"
@@ -396,7 +697,7 @@ import SearchInput from '../components/SearchInput.astro';
 						></path></svg
 					>
 				</button>
-				<!-- Dropdown menu -->
+				&lt;!&ndash; Dropdown menu &ndash;&gt;
 				<div
 					class="z-20 z-50 hidden max-w-sm my-4 overflow-hidden text-base list-none bg-white divide-y divide-gray-100 rounded shadow-lg dark:bg-gray-700 dark:divide-gray-600"
 					id="apps-dropdown"
@@ -578,7 +879,7 @@ import SearchInput from '../components/SearchInput.astro';
 
 				<ColorModeSwitcher />
 
-				<!-- Profile -->
+				&lt;!&ndash; Profile &ndash;&gt;
 				<div class="flex items-center ml-3">
 					<div>
 						<button
@@ -596,20 +897,20 @@ import SearchInput from '../components/SearchInput.astro';
 							/>
 						</button>
 					</div>
-					<!-- Dropdown menu -->
+					&lt;!&ndash; Dropdown menu &ndash;&gt;
 					<div
 						class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
 						id="dropdown-2"
 					>
 						<div class="px-4 py-3" role="none">
 							<p class="text-sm text-gray-900 dark:text-white" role="none">
-								Neil Sims
+								테스트
 							</p>
 							<p
 								class="text-sm font-medium text-gray-900 truncate dark:text-gray-300"
 								role="none"
 							>
-								neil.sims@flowbite.com
+								test@ubcn.co.kr
 							</p>
 						</div>
 						<ul class="py-1" role="none">
@@ -617,28 +918,14 @@ import SearchInput from '../components/SearchInput.astro';
 								<a
 									href="#"
 									class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-									role="menuitem">Dashboard</a
+									role="menuitem">개인정보</a
 								>
 							</li>
 							<li>
 								<a
 									href="#"
 									class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-									role="menuitem">Settings</a
-								>
-							</li>
-							<li>
-								<a
-									href="#"
-									class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-									role="menuitem">Earnings</a
-								>
-							</li>
-							<li>
-								<a
-									href="#"
-									class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-									role="menuitem">Sign out</a
+									role="menuitem">로그아웃</a
 								>
 							</li>
 						</ul>
@@ -647,4 +934,4 @@ import SearchInput from '../components/SearchInput.astro';
 			</div>
 		</div>
 	</div>
-</nav>
+</nav>-->
