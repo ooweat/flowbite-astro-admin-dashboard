@@ -27,4 +27,13 @@ export interface User {
 	status: string;
 }
 
+export type Notices = Notice[];
+export interface Notice {
+	id: string;
+	title: string;
+	content: string;
+	createdAt: string;
+	viewCount: string;
+}
+
 export type PlaygroundAction = (typeof playgroundActions)[number];

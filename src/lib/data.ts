@@ -2,8 +2,22 @@
 // GraphQL, Databases, REST APIs, CDNs, proxies, S3, Matrix, IPFS, you name it…
 
 import { API_URL, REMOTE_ASSETS_BASE_URL } from '../app/constants.js';
-import type { Endpoint, EndpointsToOperations } from '../types/entities.js';
+import type {Endpoint, EndpointsToOperations} from '../types/entities.js';
 
+export async function fetchApi(url: string) {
+	const apiUrl = `${API_URL}${url}`;
+	fetch(apiUrl, {
+		method: 'GET',
+		headers: {
+			"Content-Type": `application/json;charset=UTF-8`,
+			"Access-Control-Allow-Origin": "*",
+			"Accept": "application/json",
+		},
+	})
+	.then(response => {
+		return response.json()
+	})
+};
 export async function fetchData<Selected extends Endpoint>(endpoint: Selected) {
 	const apiEndpoint = `${API_URL}${endpoint}`;
 

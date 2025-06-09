@@ -23,7 +23,7 @@ const getMainChartOptions = () => {
 
 	return {
 		chart: {
-			height: 420,
+			height: 400,
 			type: 'area',
 			fontFamily: 'Inter, sans-serif',
 			foreColor: mainChartColors.labelColor,
@@ -59,12 +59,12 @@ const getMainChartOptions = () => {
 		},
 		series: [
 			{
-				name: 'Revenue',
+				name: '수익',
 				data: [6356, 6218, 6156, 6526, 6356, 6256, 6056],
 				color: '#1A56DB',
 			},
 			{
-				name: 'Revenue (previous period)',
+				name: '수익 (이전)',
 				data: [6556, 6725, 6424, 6356, 6586, 6756, 6616],
 				color: '#FDBA8C',
 			},
@@ -79,13 +79,13 @@ const getMainChartOptions = () => {
 		},
 		xaxis: {
 			categories: [
-				'01 Feb',
-				'02 Feb',
-				'03 Feb',
-				'04 Feb',
-				'05 Feb',
-				'06 Feb',
-				'07 Feb',
+				'일',
+				'월',
+				'화',
+				'수',
+				'목',
+				'금',
+				'토',
 			],
 			labels: {
 				style: {
@@ -118,7 +118,7 @@ const getMainChartOptions = () => {
 					fontWeight: 500,
 				},
 				formatter(value) {
-					return `$${value}`;
+					return `${value} 원`;
 				},
 			},
 		},
@@ -166,16 +166,16 @@ if (document.getElementById('new-products-chart')) {
 		colors: ['#1A56DB', '#FDBA8C'],
 		series: [
 			{
-				name: 'Quantity',
+				name: '건수',
 				color: '#1A56DB',
 				data: [
-					{ x: '01 Feb', y: 170 },
-					{ x: '02 Feb', y: 180 },
-					{ x: '03 Feb', y: 164 },
-					{ x: '04 Feb', y: 145 },
-					{ x: '05 Feb', y: 194 },
-					{ x: '06 Feb', y: 170 },
-					{ x: '07 Feb', y: 155 },
+					{ x: '일', y: 170 },
+					{ x: '월', y: 180 },
+					{ x: '화', y: 164 },
+					{ x: '수', y: 145 },
+					{ x: '목', y: 194 },
+					{ x: '금', y: 170 },
+					{ x: '토', y: 155 },
 				],
 			},
 		],
@@ -259,39 +259,39 @@ if (document.getElementById('sales-by-category')) {
 				name: 'Desktop PC',
 				color: '#1A56DB',
 				data: [
-					{ x: '01 Feb', y: 170 },
-					{ x: '02 Feb', y: 180 },
-					{ x: '03 Feb', y: 164 },
-					{ x: '04 Feb', y: 145 },
-					{ x: '05 Feb', y: 194 },
-					{ x: '06 Feb', y: 170 },
-					{ x: '07 Feb', y: 155 },
+					{ x: '일', y: 170 },
+					{ x: '월', y: 180 },
+					{ x: '화', y: 164 },
+					{ x: '수', y: 145 },
+					{ x: '목', y: 194 },
+					{ x: '금', y: 170 },
+					{ x: '토', y: 155 },
 				],
 			},
 			{
 				name: 'Phones',
 				color: '#FDBA8C',
 				data: [
-					{ x: '01 Feb', y: 120 },
-					{ x: '02 Feb', y: 294 },
-					{ x: '03 Feb', y: 167 },
-					{ x: '04 Feb', y: 179 },
-					{ x: '05 Feb', y: 245 },
-					{ x: '06 Feb', y: 182 },
-					{ x: '07 Feb', y: 143 },
+					{ x: '일', y: 120 },
+					{ x: '월', y: 294 },
+					{ x: '화', y: 167 },
+					{ x: '수', y: 179 },
+					{ x: '목', y: 245 },
+					{ x: '금', y: 182 },
+					{ x: '토', y: 143 },
 				],
 			},
 			{
 				name: 'Gaming/Console',
 				color: '#17B0BD',
 				data: [
-					{ x: '01 Feb', y: 220 },
-					{ x: '02 Feb', y: 194 },
-					{ x: '03 Feb', y: 217 },
-					{ x: '04 Feb', y: 279 },
-					{ x: '05 Feb', y: 215 },
-					{ x: '06 Feb', y: 263 },
-					{ x: '07 Feb', y: 183 },
+					{ x: '일', y: 220 },
+					{ x: '월', y: 194 },
+					{ x: '화', y: 217 },
+					{ x: '수', y: 279 },
+					{ x: '목', y: 215 },
+					{ x: '금', y: 263 },
+					{ x: '토', y: 183 },
 				],
 			},
 		],
@@ -390,13 +390,13 @@ const getVisitorsChartOptions = () => {
 			},
 		],
 		labels: [
-			'01 Feb',
-			'02 Feb',
-			'03 Feb',
-			'04 Feb',
-			'05 Feb',
-			'06 Feb',
-			'07 Feb',
+			'일',
+			'월',
+			'화',
+			'수',
+			'목',
+			'금',
+			'토',
 		],
 		chart: {
 			type: 'area',
@@ -468,18 +468,18 @@ const getSignupsChartOptions = () => {
 	return {
 		series: [
 			{
-				name: 'Users',
+				name: '건수',
 				data: [1334, 2435, 1753, 1328, 1155, 1632, 1336],
 			},
 		],
 		labels: [
-			'01 Feb',
-			'02 Feb',
-			'03 Feb',
-			'04 Feb',
-			'05 Feb',
-			'06 Feb',
-			'07 Feb',
+			'일',
+			'월',
+			'화',
+			'수',
+			'목',
+			'금',
+			'토',
 		],
 		chart: {
 			type: 'bar',
@@ -582,12 +582,12 @@ const getTrafficChannelsChartOptions = () => {
 	}
 
 	return {
-		series: [70, 5, 25],
-		labels: ['Desktop', 'Tablet', 'Phone'],
-		colors: ['#16BDCA', '#FDBA8C', '#1A56DB'],
+		series: [100, 45],
+		labels: ['정상', '비정상'],
+		colors: ['#16BDCA', '#FDBA8C'],
 		chart: {
 			type: 'donut',
-			height: 400,
+			height: 300,
 			fontFamily: 'Inter, sans-serif',
 			toolbar: {
 				show: false,
@@ -595,10 +595,10 @@ const getTrafficChannelsChartOptions = () => {
 		},
 		responsive: [
 			{
-				breakpoint: 430,
+				breakpoint: 330,
 				options: {
 					chart: {
-						height: 300,
+						height: 200,
 					},
 				},
 			},
@@ -632,7 +632,7 @@ const getTrafficChannelsChartOptions = () => {
 			},
 			y: {
 				formatter(value) {
-					return `${value}%`;
+					return `${value} 대`;
 				},
 			},
 		},
