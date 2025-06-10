@@ -1,7 +1,6 @@
 export const API_URL = `https://devapi.ubcn.co.kr:17881`;
 
-//export const REMOTE_ASSETS_BASE_URL = `https://flowbite-admin-dashboard.vercel.app`;
-export const REMOTE_ASSETS_BASE_URL = `https://localhost:3000`;
+export const REMOTE_ASSETS_BASE_URL = `https://demo.ubcn.co.kr`;
 export const SITE_TITLE = 'BackOffice';
 
 /* Useful flag for sourcing from `./data` entirely, disabling randomize layer */

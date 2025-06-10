@@ -3,7 +3,12 @@
 import ApexCharts from 'apexcharts';
 
 const getMainChartOptions = () => {
-	let mainChartColors = {};
+	let 		mainChartColors = {
+				borderColor: '#F3F4F6',
+				labelColor: '#6B7280',
+				opacityFrom: 0.45,
+				opacityTo: 0,
+			};
 
 	if (document.documentElement.classList.contains('dark')) {
 		mainChartColors = {
@@ -11,13 +16,6 @@ const getMainChartOptions = () => {
 			labelColor: '#9CA3AF',
 			opacityFrom: 0,
 			opacityTo: 0.15,
-		};
-	} else {
-		mainChartColors = {
-			borderColor: '#F3F4F6',
-			labelColor: '#6B7280',
-			opacityFrom: 0.45,
-			opacityTo: 0,
 		};
 	}
 
@@ -117,7 +115,8 @@ const getMainChartOptions = () => {
 					fontSize: '14px',
 					fontWeight: 500,
 				},
-				formatter(value) {
+				formatter(value: number) {
+					//value = parseInt(numberWithCommas(value));
 					return `${value} 원`;
 				},
 			},
@@ -367,77 +366,18 @@ if (document.getElementById('sales-by-category')) {
 	chart.render();
 }
 
-const getVisitorsChartOptions = () => {
-	let visitorsChartColors = {};
-
-	if (document.documentElement.classList.contains('dark')) {
-		visitorsChartColors = {
-			fillGradientShade: 'dark',
-			fillGradientShadeIntensity: 0.45,
-		};
-	} else {
-		visitorsChartColors = {
-			fillGradientShade: 'light',
-			fillGradientShadeIntensity: 1,
-		};
-	}
-
-	return {
-		series: [
-			{
-				name: 'Visitors',
-				data: [500, 590, 600, 520, 610, 550, 600],
-			},
-		],
-		labels: [
-			'일',
-			'월',
-			'화',
-			'수',
-			'목',
-			'금',
-			'토',
-		],
-		chart: {
-			type: 'area',
-			height: '305px',
-			fontFamily: 'Inter, sans-serif',
-			sparkline: {
-				enabled: true,
-			},
-			toolbar: {
-				show: false,
-			},
-		},
-		fill: {
-			type: 'gradient',
-			gradient: {
-				shade: visitorsChartColors.fillGradientShade,
-				shadeIntensity: visitorsChartColors.fillGradientShadeIntensity,
-			},
-		},
-		plotOptions: {
-			area: {
-				fillTo: 'end',
-			},
-		},
-		theme: {
-			monochrome: {
-				enabled: true,
-				color: '#1A56DB',
-			},
-		},
-		tooltip: {
-			style: {
-				fontSize: '14px',
-				fontFamily: 'Inter, sans-serif',
-			},
-		},
-	};
-};
-
 const getSignupsChartOptions = () => {
-	let signupsChartColors = {};
+	let signupsChartColors = {
+		backgroundBarColors: [
+			'#E5E7EB',
+			'#E5E7EB',
+			'#E5E7EB',
+			'#E5E7EB',
+			'#E5E7EB',
+			'#E5E7EB',
+			'#E5E7EB',
+		],
+	};
 
 	if (document.documentElement.classList.contains('dark')) {
 		signupsChartColors = {
@@ -449,18 +389,6 @@ const getSignupsChartOptions = () => {
 				'#374151',
 				'#374151',
 				'#374151',
-			],
-		};
-	} else {
-		signupsChartColors = {
-			backgroundBarColors: [
-				'#E5E7EB',
-				'#E5E7EB',
-				'#E5E7EB',
-				'#E5E7EB',
-				'#E5E7EB',
-				'#E5E7EB',
-				'#E5E7EB',
 			],
 		};
 	}
@@ -568,19 +496,17 @@ if (document.getElementById('week-signups-chart')) {
 	});
 }
 
-const getTrafficChannelsChartOptions = () => {
-	let trafficChannelsChartColors = {};
+const getStatusAliveByTerminal = () => {
+	let trafficChannelsChartColors = {
+				strokeColor: '#ffffff',
+			};
 
 	if (document.documentElement.classList.contains('dark')) {
 		trafficChannelsChartColors = {
 			strokeColor: '#1f2937',
 		};
-	} else {
-		trafficChannelsChartColors = {
-			strokeColor: '#ffffff',
-		};
 	}
-
+	
 	return {
 		series: [100, 45],
 		labels: ['정상', '비정상'],
@@ -625,13 +551,13 @@ const getTrafficChannelsChartOptions = () => {
 			},
 			x: {
 				show: true,
-				formatter(_, { seriesIndex, w }) {
+				formatter(_: any, {seriesIndex, w}: any) {
 					const label = w.config.labels[seriesIndex];
 					return label;
 				},
 			},
 			y: {
-				formatter(value) {
+				formatter(value: string) {
 					return `${value} 대`;
 				},
 			},
@@ -651,12 +577,23 @@ const getTrafficChannelsChartOptions = () => {
 if (document.getElementById('status-by-terminal')) {
 	const chart = new ApexCharts(
 		document.getElementById('status-by-terminal'),
-		getTrafficChannelsChartOptions(),
+		getStatusAliveByTerminal(),
 	);
 	chart.render();
 
 	// init again when toggling dark mode
 	document.addEventListener('dark-mode', () => {
-		chart.updateOptions(getTrafficChannelsChartOptions());
+		chart.updateOptions(getStatusAliveByTerminal());
 	});
 }
+
+/*
+const numberWithCommas(x: number): string {
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}*/
+
+/*
+const numberWithCommas = (x: number): string => {
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+*/
