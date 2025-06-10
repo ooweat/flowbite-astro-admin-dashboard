@@ -3,12 +3,12 @@
 import ApexCharts from 'apexcharts';
 
 const getMainChartOptions = () => {
-	let 		mainChartColors = {
-				borderColor: '#F3F4F6',
-				labelColor: '#6B7280',
-				opacityFrom: 0.45,
-				opacityTo: 0,
-			};
+	let mainChartColors = {
+		borderColor: '#F3F4F6',
+		labelColor: '#6B7280',
+		opacityFrom: 0.45,
+		opacityTo: 0,
+	};
 
 	if (document.documentElement.classList.contains('dark')) {
 		mainChartColors = {
@@ -57,13 +57,23 @@ const getMainChartOptions = () => {
 		},
 		series: [
 			{
-				name: '수익',
-				data: [6356, 6218, 6156, 6526, 6356, 6256, 6056],
+				name: '오늘',
+				data: [
+					49000, 25000, 67000, 89000, 56000, 99000,
+				  60000, 109000, 840000, 759000, 990000, 822000,
+				  601000, 997000, 810000, 924000, 831000, 773000,
+				  625000, 799000, 473000, 702000, 160000, 98000,
+								],
 				color: '#1A56DB',
 			},
 			{
-				name: '수익 (이전)',
-				data: [6556, 6725, 6424, 6356, 6586, 6756, 6616],
+				name: '어제',
+				data: [
+					60000, 83000, 14000,  9000, 56000, 73000,
+		  64000, 184000, 655000, 733000, 911000, 850000,
+		  991000, 787000, 600000, 799000, 698000, 876000,
+		  780000, 621000, 408000, 850000, 230000, 71000,
+				],
 				color: '#FDBA8C',
 			},
 		],
@@ -76,20 +86,15 @@ const getMainChartOptions = () => {
 			},
 		},
 		xaxis: {
-			categories: [
-				'일',
-				'월',
-				'화',
-				'수',
-				'목',
-				'금',
-				'토',
-			],
+			categories: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
 			labels: {
 				style: {
 					colors: [mainChartColors.labelColor],
 					fontSize: '14px',
 					fontWeight: 500,
+				},
+				formatter(value: number) {
+					return `${value}`;
 				},
 			},
 			axisBorder: {
@@ -97,15 +102,6 @@ const getMainChartOptions = () => {
 			},
 			axisTicks: {
 				color: mainChartColors.borderColor,
-			},
-			crosshairs: {
-				show: true,
-				position: 'back',
-				stroke: {
-					color: mainChartColors.borderColor,
-					width: 1,
-					dashArray: 10,
-				},
 			},
 		},
 		yaxis: {
@@ -115,9 +111,10 @@ const getMainChartOptions = () => {
 					fontSize: '14px',
 					fontWeight: 500,
 				},
-				formatter(value: number) {
-					//value = parseInt(numberWithCommas(value));
-					return `${value} 원`;
+				formatter: (value: number) => {
+					if (value >= 1000) {
+						return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+					}
 				},
 			},
 		},
@@ -224,17 +221,23 @@ if (document.getElementById('new-products-chart')) {
 			show: false,
 		},
 		xaxis: {
-			floating: false,
-			labels: {
-				show: false,
-			},
-			axisBorder: {
-				show: false,
-			},
-			axisTicks: {
-				show: false,
-			},
-		},
+							categories: [
+								'일',
+								'월',
+								'화',
+								'수',
+								'목',
+								'금',
+								'토',
+							],
+							labels: {
+								style: {
+									colors: '#4B5563',
+									fontSize: '14px',
+									fontWeight: 600,
+								},
+							},
+						},
 		yaxis: {
 			show: false,
 		},
@@ -586,14 +589,3 @@ if (document.getElementById('status-by-terminal')) {
 		chart.updateOptions(getStatusAliveByTerminal());
 	});
 }
-
-/*
-const numberWithCommas(x: number): string {
-	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}*/
-
-/*
-const numberWithCommas = (x: number): string => {
-	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
-*/
