@@ -19,7 +19,7 @@ export async function fetchApi(url: string) {
 	})
 };
 export async function fetchData<Selected extends Endpoint>(endpoint: Selected) {
-	const apiEndpoint = `${API_URL}${endpoint}`;
+	const apiEndpoint = `${API_URL}/${endpoint}`;
 
 	console.info(`Fetching ${apiEndpoint}…`);
 	return fetch(apiEndpoint)

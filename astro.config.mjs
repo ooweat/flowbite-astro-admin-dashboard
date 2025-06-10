@@ -15,7 +15,10 @@ export default defineConfig({
 	// output: 'server',
 
 	/* Like Vercel, Netlify,… Mimicking for dev. server */
-	// trailingSlash: 'always',
+	trailingSlash: 'always',
+	build: {
+		format: 'file',
+	},
 
 	server: {
 		/* Dev. server only */

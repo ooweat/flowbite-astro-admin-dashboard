@@ -1,14 +1,14 @@
 ---
 /* eslint max-lines: 'off' */
 
-import NavPagination from '../components/NavPagination.astro';
+/*import NavPagination from '../components/NavPagination.astro';
 import { asset, fetchData } from '../lib/data.js';
 
 const { class: clazz } = Astro.props;
-const users = await fetchData('users');
+const users = await fetchData('users');*/
 ---
 
-<entities-crud
+<!--<entities-crud
 	type="users"
 	class:list={['block overflow-hidden shadow', clazz]}
 >
@@ -162,8 +162,8 @@ const users = await fetchData('users');
 					</div>
 				</div>
 				<div class="flex items-center ml-auto space-x-2 sm:space-x-3">
-					<!-- NOTE: Not implemented (see `./CrudProducts` for reference) -->
-					<!-- <button
+					&lt;!&ndash; NOTE: Not implemented (see `./CrudProducts` for reference) &ndash;&gt;
+					&lt;!&ndash; <button
 						type="button"
 						data-refresh
 						class="inline-flex items-center justify-center w-1/2 px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
@@ -184,7 +184,7 @@ const users = await fetchData('users');
 							></path>
 						</svg>
 						Refresh
-					</button> -->
+					</button> &ndash;&gt;
 					<button
 						type="button"
 						data-modal-target="add-user-modal"
@@ -391,15 +391,15 @@ const users = await fetchData('users');
 		</div>
 	</div>
 
-	<!-- Edit User Modal -->
+	&lt;!&ndash; Edit User Modal &ndash;&gt;
 	<div
 		class="fixed left-0 right-0 z-50 items-center justify-center hidden overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full"
 		id="edit-user-modal"
 	>
 		<div class="relative w-full h-full max-w-2xl px-4 md:h-auto">
-			<!-- Modal content -->
+			&lt;!&ndash; Modal content &ndash;&gt;
 			<div class="relative bg-white rounded-lg shadow dark:bg-gray-800">
-				<!-- Modal header -->
+				&lt;!&ndash; Modal header &ndash;&gt;
 				<div
 					class="flex items-start justify-between p-5 border-b rounded-t dark:border-gray-700"
 				>
@@ -421,7 +421,7 @@ const users = await fetchData('users');
 						>
 					</button>
 				</div>
-				<!-- Modal body -->
+				&lt;!&ndash; Modal body &ndash;&gt;
 				<div class="p-6 space-y-6">
 					<form action="#">
 						<div class="grid grid-cols-6 gap-6">
@@ -537,7 +537,7 @@ const users = await fetchData('users');
 							</div>
 						</div>
 					</form>
-					<!-- Modal footer -->
+					&lt;!&ndash; Modal footer &ndash;&gt;
 					<div
 						class="items-center p-6 border-t border-gray-200 rounded-b dark:border-gray-700"
 					>
@@ -551,15 +551,15 @@ const users = await fetchData('users');
 		</div>
 	</div>
 
-	<!-- Add User Modal -->
+	&lt;!&ndash; Add User Modal &ndash;&gt;
 	<div
 		class="fixed left-0 right-0 z-50 items-center justify-center hidden overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full"
 		id="add-user-modal"
 	>
 		<div class="relative w-full h-full max-w-2xl px-4 md:h-auto">
-			<!-- Modal content -->
+			&lt;!&ndash; Modal content &ndash;&gt;
 			<div class="relative bg-white rounded-lg shadow dark:bg-gray-800">
-				<!-- Modal header -->
+				&lt;!&ndash; Modal header &ndash;&gt;
 				<div
 					class="flex items-start justify-between p-5 border-b rounded-t dark:border-gray-700"
 				>
@@ -581,7 +581,7 @@ const users = await fetchData('users');
 						>
 					</button>
 				</div>
-				<!-- Modal body -->
+				&lt;!&ndash; Modal body &ndash;&gt;
 				<div class="p-6 space-y-6">
 					<form action="#">
 						<div class="grid grid-cols-6 gap-6">
@@ -660,7 +660,7 @@ const users = await fetchData('users');
 							</div>
 						</div>
 					</form>
-					<!-- Modal footer -->
+					&lt;!&ndash; Modal footer &ndash;&gt;
 					<div
 						class="items-center p-6 border-t border-gray-200 rounded-b dark:border-gray-700"
 					>
@@ -674,15 +674,15 @@ const users = await fetchData('users');
 		</div>
 	</div>
 
-	<!-- Delete User Modal -->
+	&lt;!&ndash; Delete User Modal &ndash;&gt;
 	<div
 		class="fixed left-0 right-0 z-50 items-center justify-center hidden overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full"
 		id="delete-user-modal"
 	>
 		<div class="relative w-full h-full max-w-md px-4 md:h-auto">
-			<!-- Modal content -->
+			&lt;!&ndash; Modal content &ndash;&gt;
 			<div class="relative bg-white rounded-lg shadow dark:bg-gray-800">
-				<!-- Modal header -->
+				&lt;!&ndash; Modal header &ndash;&gt;
 				<div class="flex justify-end p-2">
 					<button
 						type="button"
@@ -701,7 +701,7 @@ const users = await fetchData('users');
 						>
 					</button>
 				</div>
-				<!-- Modal body -->
+				&lt;!&ndash; Modal body &ndash;&gt;
 				<div class="p-6 pt-0 text-center">
 					<svg
 						class="w-16 h-16 mx-auto text-red-600"
@@ -737,7 +737,7 @@ const users = await fetchData('users');
 	</div>
 
 	<NavPagination />
-</entities-crud>
+</entities-crud>-->
 
 <script>
 	import './CrudEntities.client.js';

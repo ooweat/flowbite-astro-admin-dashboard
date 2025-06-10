@@ -587,7 +587,7 @@ const getTrafficChannelsChartOptions = () => {
 		colors: ['#16BDCA', '#FDBA8C'],
 		chart: {
 			type: 'donut',
-			height: 300,
+			height: 350,
 			fontFamily: 'Inter, sans-serif',
 			toolbar: {
 				show: false,
@@ -595,7 +595,7 @@ const getTrafficChannelsChartOptions = () => {
 		},
 		responsive: [
 			{
-				breakpoint: 330,
+				breakpoint: 300,
 				options: {
 					chart: {
 						height: 200,
@@ -648,9 +648,9 @@ const getTrafficChannelsChartOptions = () => {
 	};
 };
 
-if (document.getElementById('traffic-by-device')) {
+if (document.getElementById('status-by-terminal')) {
 	const chart = new ApexCharts(
-		document.getElementById('traffic-by-device'),
+		document.getElementById('status-by-terminal'),
 		getTrafficChannelsChartOptions(),
 	);
 	chart.render();

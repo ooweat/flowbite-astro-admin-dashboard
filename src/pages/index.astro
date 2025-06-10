@@ -3,6 +3,10 @@ import NavBarSidebar from '../app/NavBarSidebar.astro';
 import DashBoard from "../modules/DashBoard.astro";
 import LayoutCommon from "../app/LayoutCommon.astro";
 ---
+<script>
+	document.documentElement.dataset.theme = 'light';
+		localStorage.setItem('color-theme', 'light');
+</script>
 <LayoutCommon>
 	<NavBarSidebar />
 <DashBoard />

@@ -1,12 +1,13 @@
 ---
 /* eslint max-lines: 'off' */
 
-import { fetchData } from '../lib/data.js';
+/*import { fetchData } from '../lib/data.js';
 import NavPagination from '../components/NavPagination.astro';
 
-const products = await fetchData('products');
+const products = await fetchData('products');*/
 ---
 
+<!--
 <entities-crud type="products">
 	<div
 		class="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-800 dark:border-gray-700"
@@ -353,7 +354,7 @@ const products = await fetchData('products');
 		</div>
 	</div>
 
-	<!-- Edit Product Drawer -->
+	&lt;!&ndash; Edit Product Drawer &ndash;&gt;
 	<div
 		id="drawer-update-product-default"
 		class="fixed top-0 right-0 z-40 w-full h-screen max-w-xs p-4 overflow-y-auto transition-transform translate-x-full bg-white dark:bg-gray-800"
@@ -503,7 +504,7 @@ const products = await fetchData('products');
 		</form>
 	</div>
 
-	<!-- Delete Product Drawer -->
+	&lt;!&ndash; Delete Product Drawer &ndash;&gt;
 	<div
 		id="drawer-delete-product-default"
 		class="fixed top-0 right-0 z-40 w-full h-screen max-w-xs p-4 overflow-y-auto transition-transform translate-x-full bg-white dark:bg-gray-800"
@@ -567,7 +568,7 @@ const products = await fetchData('products');
 		</a>
 	</div>
 
-	<!-- Add Product Drawer -->
+	&lt;!&ndash; Add Product Drawer &ndash;&gt;
 	<div
 		id="drawer-create-product-default"
 		class="fixed top-0 right-0 z-40 w-full h-screen max-w-xs p-4 overflow-y-auto transition-transform translate-x-full bg-white dark:bg-gray-800"
@@ -718,6 +719,7 @@ const products = await fetchData('products');
 
 	<NavPagination />
 </entities-crud>
+-->
 
 <script>
 	import './CrudEntities.client.js';
