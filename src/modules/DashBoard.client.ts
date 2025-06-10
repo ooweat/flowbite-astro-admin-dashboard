@@ -19,6 +19,7 @@ const getMainChartOptions = () => {
 		};
 	}
 
+	// @ts-ignore
 	return {
 		chart: {
 			height: 400,
@@ -111,7 +112,7 @@ const getMainChartOptions = () => {
 					fontSize: '14px',
 					fontWeight: 500,
 				},
-				formatter: (value: number) => {
+				formatter: (value: any) => {
 					if (value >= 1000) {
 						return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 					}
