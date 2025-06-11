@@ -2,7 +2,15 @@
 
 import ApexCharts from 'apexcharts';
 
-const getMainChartOptions = () => {
+export const getDayOfTimeSalesChart = (todays: number[], yesterdays: number[]) => {
+	const chart = new ApexCharts(
+		document.getElementById('day-of-time-sales-chart'),
+		getDayOfTimeSalesChartOptions(todays, yesterdays),
+	);
+	chart.render();
+}
+
+const getDayOfTimeSalesChartOptions = (todays: number[], yesterdays: number[]) => {
 	let mainChartColors = {
 		borderColor: '#F3F4F6',
 		labelColor: '#6B7280',
@@ -18,17 +26,19 @@ const getMainChartOptions = () => {
 			opacityTo: 0.15,
 		};
 	}
-
-	// @ts-ignore
+	
 	return {
 		chart: {
-			height: 400,
+			height: 250,
 			type: 'area',
 			fontFamily: 'Inter, sans-serif',
 			foreColor: mainChartColors.labelColor,
 			toolbar: {
 				show: false,
 			},
+			zoom: {
+				enabled: false,
+			}
 		},
 		fill: {
 			type: 'gradient',
@@ -59,22 +69,12 @@ const getMainChartOptions = () => {
 		series: [
 			{
 				name: '오늘',
-				data: [
-					49000, 25000, 67000, 89000, 56000, 99000,
-				  60000, 109000, 840000, 759000, 990000, 822000,
-				  601000, 997000, 810000, 924000, 831000, 773000,
-				  625000, 799000, 473000, 702000, 160000, 98000,
-								],
+				data: todays,
 				color: '#1A56DB',
 			},
 			{
 				name: '어제',
-				data: [
-					60000, 83000, 14000,  9000, 56000, 73000,
-		  64000, 184000, 655000, 733000, 911000, 850000,
-		  991000, 787000, 600000, 799000, 698000, 876000,
-		  780000, 621000, 408000, 850000, 230000, 71000,
-				],
+				data: yesterdays,
 				color: '#FDBA8C',
 			},
 		],
@@ -91,11 +91,11 @@ const getMainChartOptions = () => {
 			labels: {
 				style: {
 					colors: [mainChartColors.labelColor],
-					fontSize: '14px',
-					fontWeight: 500,
+					fontSize: '13px',
+					fontWeight: 400,
 				},
 				formatter(value: number) {
-					return `${value}`;
+					return `${value}시`;
 				},
 			},
 			axisBorder: {
@@ -109,25 +109,24 @@ const getMainChartOptions = () => {
 			labels: {
 				style: {
 					colors: [mainChartColors.labelColor],
-					fontSize: '14px',
-					fontWeight: 500,
+					fontSize: '13px',
+					fontWeight: 400,
 				},
-				formatter: (value: any) => {
-					if (value >= 1000) {
-						return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-					}
+				formatter: (value: number) => {
+					return `${(value / 1000)}K`;
 				},
 			},
 		},
 		legend: {
-			fontSize: '14px',
-			fontWeight: 500,
+			fontSize: '13px',
+			fontWeight: 400,
 			fontFamily: 'Inter, sans-serif',
+			position: 'right',
 			labels: {
 				colors: [mainChartColors.labelColor],
 			},
 			itemMargin: {
-				horizontal: 10,
+				horizontal: 0,
 			},
 		},
 		responsive: [
@@ -145,18 +144,152 @@ const getMainChartOptions = () => {
 	};
 };
 
-if (document.getElementById('main-chart')) {
+export const getWeekSalesChart = (amounts: number[], counts: number[]) => {
 	const chart = new ApexCharts(
-		document.getElementById('main-chart'),
-		getMainChartOptions(),
+		document.getElementById('week-sales-chart'),
+		getWeekSalesChartOptions(amounts, counts),
 	);
 	chart.render();
-
-	// init again when toggling dark mode
-	document.addEventListener('dark-mode', () => {
-		chart.updateOptions(getMainChartOptions());
-	});
 }
+
+const getWeekSalesChartOptions = (amounts: number[], counts: number[]) => {
+	let mainChartColors = {
+		borderColor: '#F3F4F6',
+		labelColor: '#6B7280',
+		opacityFrom: 0.45,
+		opacityTo: 0,
+	};
+
+	if (document.documentElement.classList.contains('dark')) {
+		mainChartColors = {
+			borderColor: '#374151',
+			labelColor: '#9CA3AF',
+			opacityFrom: 0,
+			opacityTo: 0.15,
+		};
+	}
+	
+	return {
+		chart: {
+			height: 250,
+			type: 'line',
+			fontFamily: 'Inter, sans-serif',
+			foreColor: mainChartColors.labelColor,
+			toolbar: {
+				show: false,
+			},
+			zoom: {
+				enabled: false,
+			}
+		},
+		dataLabels: {
+			enabled: false,
+		},
+		tooltip: {
+			style: {
+				fontSize: '14px',
+				fontFamily: 'Inter, sans-serif',
+			},
+		},
+		grid: {
+			show: true,
+			borderColor: mainChartColors.borderColor,
+			strokeDashArray: 1,
+			padding: {
+				left: 35,
+				bottom: 15,
+			},
+		},
+		colors: ['#1A56DB', '#FDBA8C'],
+		series: [
+			{
+				name: "매출액",
+				type: 'column',
+				data: amounts,
+			},
+			{
+				name: "건수",
+				type: 'line',
+				data: counts,
+			},
+		],
+		stroke: {
+			width: [0, 4]
+		},
+		xaxis: {
+			categories: ['01', '02', '03', '04', '05', '06', '07',],
+			type: 'column',
+			labels: {
+				style: {
+					colors: [mainChartColors.labelColor],
+					fontSize: '13px',
+					fontWeight: 400,
+				},
+				formatter(value: number) {
+					return `${value} 일`;
+				},
+			},
+			axisBorder: {
+				color: mainChartColors.borderColor,
+			},
+			axisTicks: {
+				color: mainChartColors.borderColor,
+			},
+		},
+		yaxis: [
+			{
+				labels: {
+					style: {
+						colors: [mainChartColors.labelColor],
+						fontSize: '13px',
+						fontWeight: 400,
+					},
+					formatter: (value: number) => {
+						return `${(value / 1000)}K`;
+					},
+				},
+				axisTicks: {
+					show: true
+				},
+				axisBorder: {
+					show: true,
+				},
+			},
+			{
+				labels: {
+					style: {
+						colors: [mainChartColors.labelColor],
+						fontSize: '13px',
+						fontWeight: 400,
+					},
+					formatter: (value: number) => {
+						return `${(value / 1000)}K 건`;
+					},
+				},
+				opposite: true,
+				axisTicks: {
+					show: true
+				},
+				axisBorder: {
+					show: true,
+				},
+			},
+		],
+		legend: {
+					fontSize: '13px',
+					fontWeight: 400,
+					fontFamily: 'Inter, sans-serif',
+					position: 'right',
+					labels: {
+						colors: [mainChartColors.labelColor],
+					},
+					itemMargin: {
+						horizontal: 0,
+					},
+				},
+	};
+};
+
 
 if (document.getElementById('new-products-chart')) {
 	const options = {
@@ -222,23 +355,15 @@ if (document.getElementById('new-products-chart')) {
 			show: false,
 		},
 		xaxis: {
-							categories: [
-								'일',
-								'월',
-								'화',
-								'수',
-								'목',
-								'금',
-								'토',
-							],
-							labels: {
-								style: {
-									colors: '#4B5563',
-									fontSize: '14px',
-									fontWeight: 600,
-								},
-							},
-						},
+			categories: ['일', '월', '화', '수', '목', '금', '토',],
+			labels: {
+				style: {
+					colors: '#4B5563',
+					fontSize: '14px',
+					fontWeight: 600,
+				},
+			},
+		},
 		yaxis: {
 			show: false,
 		},
@@ -404,15 +529,7 @@ const getSignupsChartOptions = () => {
 				data: [1334, 2435, 1753, 1328, 1155, 1632, 1336],
 			},
 		],
-		labels: [
-			'일',
-			'월',
-			'화',
-			'수',
-			'목',
-			'금',
-			'토',
-		],
+		labels: ['일', '월', '화', '수', '목', '금', '토',],
 		chart: {
 			type: 'bar',
 			height: '140px',
@@ -442,6 +559,16 @@ const getSignupsChartOptions = () => {
 			},
 		},
 		xaxis: {
+			categories: ['일', '월', '화', '수', '목', '금', '토',],
+			labels: {
+				style: {
+					colors: '#4B5563',
+					fontSize: '14px',
+					fontWeight: 600,
+				},
+			},
+		},
+		/*xaxis: {
 			floating: false,
 			labels: {
 				show: false,
@@ -452,7 +579,7 @@ const getSignupsChartOptions = () => {
 			axisTicks: {
 				show: false,
 			},
-		},
+		},*/
 		tooltip: {
 			shared: true,
 			intersect: false,
@@ -517,7 +644,7 @@ const getStatusAliveByTerminal = () => {
 		colors: ['#16BDCA', '#FDBA8C'],
 		chart: {
 			type: 'donut',
-			height: 350,
+			height: 200,
 			fontFamily: 'Inter, sans-serif',
 			toolbar: {
 				show: false,

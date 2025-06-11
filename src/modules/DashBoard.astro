@@ -1,19 +1,38 @@
 ---
 /* eslint max-lines: 'off' */
 
-import {asset} from "../lib/data.js";
+import {asset, fetchApi} from "../lib/data.js";
 import {API_URL} from "../app/constants";
 
-const noticeList = await fetch(`${API_URL}/list/noticeList`).then((response) => response.json());
+const noticeList = await fetchApi(`${API_URL}/cs`, {type: "N"})
+.then((response) => response.json());
 
-const notices = await noticeList?.data.filter((item, idx) => idx < 5).map((notice) => {
+const noticeList2 = await fetchApi(`${API_URL}/cs`, {type: "F"})
+.then((response) => response.json());
+
+const notices = await noticeList?.noticeList.filter((item, idx) => idx < 2).map((notice) => {
 	return {
-		id: notice.noticeSeq,
-		title: notice.subject,
-		content: notice.content,
-		createdAt: notice.regDate,
+		title: notice.title,
+		content: notice.detail,
+		createdAt: notice.date,
 	};
 });
+
+const today = new Date().getFullYear() + '-' + ('0' + (new Date().getMonth() + 1)).slice(-2) + '-' + ('0' + new Date().getDate()).slice(-2);
+
+/*
+const moneys = [4900, 2500, 6700, 8900, 5600, 9900,
+	6000, 10900, 84000, 75900, 90000, 82000,
+	60100, 99700, 81000, 92400, 83100, 77300,
+	62500, 79900, 47300, 70200, 16000, 9800,];
+let summary = 0;
+moneys.forEach((money) => {
+	summary += money;
+});
+
+console.log(summary);
+*/
+
 
 const numberWithCommas = (x: number): string => {
 	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -23,597 +42,238 @@ const numberWithCommas = (x: number): string => {
 */
 ---
 
-<div class="px-4 pt-6">
-	<div class="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
-		<!-- Main widget -->
-		<div
-			class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800"
-		>
-			<div class="flex items-center justify-between mb-4">
-				<div class="flex-shrink-0">
-					<span
-						class="text-xl font-bold leading-none text-gray-900 sm:text-2xl dark:text-white"
-					>{numberWithCommas(11758000)}원</span
-					>
-					<h3 class="text-base font-light text-gray-500 dark:text-gray-400">
-						오늘 매출
+<div class="p-2">
+	<div class="grid w-full grid-cols-1 gap-3 xl:grid-cols-1 2xl:grid-cols-2">
+		<!-- Left widget -->
+		<div class="grid gap-3 shadow-sm ">
+			<div class="px-4 pt-6 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:px-4 sm:pt-6 dark:bg-gray-800">
+				<div class="w-full mb-4 sm:mb-0">
+					<h3 class="text-base font-normal text-gray-500 dark:text-gray-400">
+						시간대별 매출액 | 단위: 시간, 원(1K = 1,000)
 					</h3>
-				</div>
-			</div>
-
-			<!-- NOTE: Charts could be extracted to a generic UI component -->
-			<div id="main-chart"></div>
-		</div>
-		<!--Tabs widget -->
-		<div
-			class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800"
-		>
-			<h3
-				class="flex items-center mb-4 text-lg font-medium text-gray-900 dark:text-white"
-			>
-				이번 달 통계
-				<button
-					data-popover-target="popover-description"
-					data-popover-placement="bottom-end"
-					type="button"
-				>
-					<svg
-						class="w-4 h-4 ml-2 text-gray-400 hover:text-gray-500"
-						aria-hidden="true"
-						fill="currentColor"
-						viewBox="0 0 20 20"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							fill-rule="evenodd"
-							d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
-							clip-rule="evenodd"></path>
-					</svg
-					>
-					<span class="sr-only">Show information</span></button
-				>
-			</h3>
-			<div
-				data-popover
-				id="popover-description"
-				role="tooltip"
-				class="absolute z-10 invisible inline-block text-sm font-light text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-72 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400"
-			>
-				<div class="p-3 space-y-2">
-					<h3 class="font-medium text-gray-900 dark:text-white">
-						통계
-					</h3>
-					<p>
-						이번 달의 통계는 지난 달과 비교하여 매출, 고객 수, 거래량 등을 ~~
+					<span class="text-2xl font-bold leading-none text-gray-900 sm:text-3xl dark:text-white">{numberWithCommas(1166600)}원</span>
+					<p class="flex items-center text-base font-normal text-gray-500 dark:text-gray-400">
+						{today}
 					</p>
 				</div>
-				<div data-popper-arrow></div>
+				<!-- NOTE: Charts could be extracted to a generic UI component -->
+				<div id="day-of-time-sales-chart"></div>
 			</div>
-			<ul
-				class="hidden text-sm font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg sm:flex dark:divide-gray-600 dark:text-gray-400"
-				id="fullWidthTab"
-				data-tabs-toggle="#fullWidthTabContent"
-				role="tablist"
-			>
-				<li class="w-full">
-					<button
-						id="top-place"
-						data-tabs-target="#place"
-						type="button"
-						role="tab"
-						aria-controls="place"
-						aria-selected="true"
-						class="inline-block w-full p-4 rounded-tl-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600"
-					>Top 설치위치
-					</button
-					>
-				</li>
-				<li class="w-full">
-					<button
-						id="top-organ"
-						data-tabs-target="#organ"
-						type="button"
-						role="tab"
-						aria-controls="organ"
-						aria-selected="false"
-						class="inline-block w-full p-4 rounded-tr-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600"
-					>Top 조직루트
-					</button
-					>
-				</li>
-			</ul>
-			<div id="fullWidthTabContent" class="border-t border-gray-200 dark:border-gray-600">
-				<div class="hidden pt-2" id="place" role="tabpanel" aria-labelledby="top-place">
-					<ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
-						<li class="py-3 sm:py-4">
-							<div class="flex items-center space-x-4">
-								<div class="flex-shrink-0 w-4 h-4 rounded-full">
-									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 288 512">
-										<!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-										<path
-											d="M112 316.9v156.7l22 33c4.8 7.1 15.2 7.1 20 0L176 473.6V316.9c-10.4 1.9-21.1 3.1-32 3.1s-21.6-1.1-32-3.1zM144 0C64.5 0 0 64.5 0 144s64.5 144 144 144 144-64.5 144-144S223.5 0 144 0zm0 76c-37.5 0-68 30.5-68 68 0 6.6-5.4 12-12 12s-12-5.4-12-12c0-50.7 41.3-92 92-92 6.6 0 12 5.4 12 12s-5.4 12-12 12z"/>
-									</svg>
-								</div>
-								<div class="flex-1 min-w-0">
-									<p class="font-medium text-gray-900 truncate dark:text-white">
-										유비씨엔1
-									</p>
-									<p class="text-sm text-gray-500 truncate dark:text-gray-400">
-										머신기/서울본부/금천구/가산디지털단지
-									</p>
-								</div>
-								<div
-									class="inline-flex items-center text-base font-medium text-gray-900 dark:text-white"
-								>
-									3320 원
-								</div>
-							</div>
-						</li>
-						<li class="py-3 sm:py-4">
-							<div class="flex items-center space-x-4">
-								<div class="flex-shrink-0 w-4 h-4 rounded-full">
-									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 288 512">
-										<!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-										<path
-											d="M112 316.9v156.7l22 33c4.8 7.1 15.2 7.1 20 0L176 473.6V316.9c-10.4 1.9-21.1 3.1-32 3.1s-21.6-1.1-32-3.1zM144 0C64.5 0 0 64.5 0 144s64.5 144 144 144 144-64.5 144-144S223.5 0 144 0zm0 76c-37.5 0-68 30.5-68 68 0 6.6-5.4 12-12 12s-12-5.4-12-12c0-50.7 41.3-92 92-92 6.6 0 12 5.4 12 12s-5.4 12-12 12z"/>
-									</svg>
-								</div>
-								<div class="flex-1 min-w-0">
-									<p class="font-medium text-gray-900 truncate dark:text-white">
-										유비씨엔2
-									</p>
-									<p class="text-sm text-gray-500 truncate dark:text-gray-400">
-										머신기/서울본부/금천구/가산디지털단지
-									</p>
-								</div>
-								<div
-									class="inline-flex items-center text-base font-medium text-gray-900 dark:text-white"
-								>
-									3320 원
-								</div>
-							</div>
-						</li>
-						<li class="py-3 sm:py-4">
-							<div class="flex items-center space-x-4">
-								<div class="flex-shrink-0 w-4 h-4 rounded-full">
-									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 288 512">
-										<!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-										<path
-											d="M112 316.9v156.7l22 33c4.8 7.1 15.2 7.1 20 0L176 473.6V316.9c-10.4 1.9-21.1 3.1-32 3.1s-21.6-1.1-32-3.1zM144 0C64.5 0 0 64.5 0 144s64.5 144 144 144 144-64.5 144-144S223.5 0 144 0zm0 76c-37.5 0-68 30.5-68 68 0 6.6-5.4 12-12 12s-12-5.4-12-12c0-50.7 41.3-92 92-92 6.6 0 12 5.4 12 12s-5.4 12-12 12z"/>
-									</svg>
-								</div>
-								<div class="flex-1 min-w-0">
-									<p class="font-medium text-gray-900 truncate dark:text-white">
-										유비씨엔3
-									</p>
-									<p class="text-sm text-gray-500 truncate dark:text-gray-400">
-										머신기/서울본부/금천구/가산디지털단지
-									</p>
-								</div>
-								<div
-									class="inline-flex items-center text-base font-medium text-gray-900 dark:text-white"
-								>
-									3320 원
-								</div>
-							</div>
-						</li>
-						<li class="py-3 sm:py-4">
-							<div class="flex items-center space-x-4">
-								<div class="flex-shrink-0 w-4 h-4 rounded-full">
-									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 288 512">
-										<!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-										<path
-											d="M112 316.9v156.7l22 33c4.8 7.1 15.2 7.1 20 0L176 473.6V316.9c-10.4 1.9-21.1 3.1-32 3.1s-21.6-1.1-32-3.1zM144 0C64.5 0 0 64.5 0 144s64.5 144 144 144 144-64.5 144-144S223.5 0 144 0zm0 76c-37.5 0-68 30.5-68 68 0 6.6-5.4 12-12 12s-12-5.4-12-12c0-50.7 41.3-92 92-92 6.6 0 12 5.4 12 12s-5.4 12-12 12z"/>
-									</svg>
-								</div>
-								<div class="flex-1 min-w-0">
-									<p class="font-medium text-gray-900 truncate dark:text-white">
-										유비씨엔4
-									</p>
-									<p class="text-sm text-gray-500 truncate dark:text-gray-400">
-										머신기/서울본부/금천구/가산디지털단지
-									</p>
-								</div>
-								<div
-									class="inline-flex items-center text-base font-medium text-gray-900 dark:text-white"
-								>
-									3320 원
-								</div>
-							</div>
-						</li>
-						<li class="py-3 sm:py-4">
-							<div class="flex items-center space-x-4">
-								<div class="flex-shrink-0 w-4 h-4 rounded-full">
-									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 288 512">
-										<!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-										<path
-											d="M112 316.9v156.7l22 33c4.8 7.1 15.2 7.1 20 0L176 473.6V316.9c-10.4 1.9-21.1 3.1-32 3.1s-21.6-1.1-32-3.1zM144 0C64.5 0 0 64.5 0 144s64.5 144 144 144 144-64.5 144-144S223.5 0 144 0zm0 76c-37.5 0-68 30.5-68 68 0 6.6-5.4 12-12 12s-12-5.4-12-12c0-50.7 41.3-92 92-92 6.6 0 12 5.4 12 12s-5.4 12-12 12z"/>
-									</svg>
-								</div>
-								<div class="flex-1 min-w-0">
-									<p class="font-medium text-gray-900 truncate dark:text-white">
-										유비씨엔5
-									</p>
-									<p class="text-sm text-gray-500 truncate dark:text-gray-400">
-										머신기/서울본부/금천구/가산디지털단지
-									</p>
-								</div>
-								<div
-									class="inline-flex items-center text-base font-medium text-gray-900 dark:text-white"
-								>
-									3320 원
-								</div>
-							</div>
-						</li>
-					</ul>
+			<div class="px-4 pt-6 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:px-4 sm:pt-6 dark:bg-gray-800">
+				<div class="flex items-center justify-between mb-2">
+					<div class="flex-shrink-0">
+								<span
+									class="text-xl font-bold leading-none text-gray-900 sm:text-2xl dark:text-white"
+								>{numberWithCommas(4251000)}원</span>
+						<h3 class="text-base font-light text-gray-500 dark:text-gray-400">
+							최근 7일 매출액(예시)
+						</h3>
+					</div>
 				</div>
-				<div
-					class="hidden pt-4"
-					id="organ"
-					role="tabpanel"
-					aria-labelledby="top-organ"
-				>
-					<ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
-						<li class="py-3 sm:py-4">
-							<div class="flex items-center space-x-4">
-								<div class="flex-shrink-0 w-4 h-4 rounded-full">
-									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M128 148v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12h-40c-6.6 0-12-5.4-12-12zm140 12h40c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12zm-128 96h40c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12zm128 0h40c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12zm-76 84v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm76 12h40c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12zm180 124v36H0v-36c0-6.6 5.4-12 12-12h19.5V24c0-13.3 10.7-24 24-24h337c13.3 0 24 10.7 24 24v440H436c6.6 0 12 5.4 12 12zM79.5 463H192v-67c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v67h112.5V49L80 48l-.5 415z"/></svg>
-								</div>
-								<div class="flex-1 min-w-0">
-									<p class="font-medium text-gray-900 truncate dark:text-white">
-										서울본부
-									</p>
-									<p class="text-sm text-gray-500 truncate dark:text-gray-400">
-										
-									</p>
-								</div>
-								<div
-									class="inline-flex items-center text-base font-medium text-gray-900 dark:text-white"
-								>
-									3320 원
-								</div>
-							</div>
-						</li>
-						<li class="py-3 sm:py-4">
-							<div class="flex items-center space-x-4">
-								<div class="flex-shrink-0 w-4 h-4 rounded-full">
-									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M128 148v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12h-40c-6.6 0-12-5.4-12-12zm140 12h40c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12zm-128 96h40c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12zm128 0h40c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12zm-76 84v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm76 12h40c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12zm180 124v36H0v-36c0-6.6 5.4-12 12-12h19.5V24c0-13.3 10.7-24 24-24h337c13.3 0 24 10.7 24 24v440H436c6.6 0 12 5.4 12 12zM79.5 463H192v-67c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v67h112.5V49L80 48l-.5 415z"/></svg>
-								</div>
-								<div class="flex-1 min-w-0">
-									<p class="font-medium text-gray-900 truncate dark:text-white">
-										경기본부
-									</p>
-									<p class="text-sm text-gray-500 truncate dark:text-gray-400">
-									</p>
-								</div>
-								<div
-									class="inline-flex items-center text-base font-medium text-gray-900 dark:text-white"
-								>
-									3320 원
-								</div>
-							</div>
-						</li>
-						<li class="py-3 sm:py-4">
-							<div class="flex items-center space-x-4">
-								<div class="flex-shrink-0 w-4 h-4 rounded-full">
-									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M128 148v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12h-40c-6.6 0-12-5.4-12-12zm140 12h40c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12zm-128 96h40c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12zm128 0h40c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12zm-76 84v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm76 12h40c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12zm180 124v36H0v-36c0-6.6 5.4-12 12-12h19.5V24c0-13.3 10.7-24 24-24h337c13.3 0 24 10.7 24 24v440H436c6.6 0 12 5.4 12 12zM79.5 463H192v-67c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v67h112.5V49L80 48l-.5 415z"/></svg>
-								</div>
-								<div class="flex-1 min-w-0">
-									<p class="font-medium text-gray-900 truncate dark:text-white">
-										인천본부
-									</p>
-									<p class="text-sm text-gray-500 truncate dark:text-gray-400">
-									</p>
-								</div>
-								<div
-									class="inline-flex items-center text-base font-medium text-gray-900 dark:text-white"
-								>
-									3320 원
-								</div>
-							</div>
-						</li>
-						<li class="py-3 sm:py-4">
-							<div class="flex items-center space-x-4">
-								<div class="flex-shrink-0 w-4 h-4 rounded-full">
-									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M128 148v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12h-40c-6.6 0-12-5.4-12-12zm140 12h40c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12zm-128 96h40c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12zm128 0h40c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12zm-76 84v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm76 12h40c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12zm180 124v36H0v-36c0-6.6 5.4-12 12-12h19.5V24c0-13.3 10.7-24 24-24h337c13.3 0 24 10.7 24 24v440H436c6.6 0 12 5.4 12 12zM79.5 463H192v-67c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v67h112.5V49L80 48l-.5 415z"/></svg>
-								</div>
-								<div class="flex-1 min-w-0">
-									<p class="font-medium text-gray-900 truncate dark:text-white">
-										충남본부
-									</p>
-									<p class="text-sm text-gray-500 truncate dark:text-gray-400">
-									</p>
-								</div>
-								<div
-									class="inline-flex items-center text-base font-medium text-gray-900 dark:text-white"
-								>
-									3320 원
-								</div>
-							</div>
-						</li>
-						<li class="py-3 sm:py-4">
-							<div class="flex items-center space-x-4">
-								<div class="flex-shrink-0 w-4 h-4 rounded-full">
-									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M128 148v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12h-40c-6.6 0-12-5.4-12-12zm140 12h40c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12zm-128 96h40c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12zm128 0h40c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12zm-76 84v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm76 12h40c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12zm180 124v36H0v-36c0-6.6 5.4-12 12-12h19.5V24c0-13.3 10.7-24 24-24h337c13.3 0 24 10.7 24 24v440H436c6.6 0 12 5.4 12 12zM79.5 463H192v-67c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v67h112.5V49L80 48l-.5 415z"/></svg>
-								</div>
-								<div class="flex-1 min-w-0">
-									<p class="font-medium text-gray-900 truncate dark:text-white">
-										강원본부
-									</p>
-									<p class="text-sm text-gray-500 truncate dark:text-gray-400">
-									</p>
-								</div>
-								<div
-									class="inline-flex items-center text-base font-medium text-gray-900 dark:text-white"
-								>
-									3320 원
-								</div>
-							</div>
-						</li>
-					</ul>
+
+				<!-- NOTE: Charts could be extracted to a generic UI component -->
+				<div id="week-sales-chart"></div>
+			</div>
+		</div>
+		<!-- Right widget -->
+		<div class="grid gap-3 w-full grid-cols-1 xl:grid-cols-2 2xl:grid-cols-2">
+			<div class="grid gap-3 w-full grid-cols-1 xl:grid-cols-2 2xl:grid-cols-2">
+				<div class="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:border-gray-700 sm:p-4 dark:bg-gray-800">
+					<div>
+						<h3 class="text-gray-500 dark:text-gray-400">오늘 정산 예정 금액</h3>
+						<span class="flex items-center mr-1.5 text-sm text-green-500 dark:text-green-400">
+										<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+											<path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+										</svg>
+										<h4 class="text-xl font-bold dark:text-white">1,234,124</h4>원
+									</span>
+					</div>
 				</div>
-			</div>
-		</div>
-	</div>
-	<div
-		class="grid w-full grid-cols-1 gap-4 mt-4 xl:grid-cols-2 2xl:grid-cols-3"
-	>
-		<div
-			class="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:border-gray-700 sm:p-6 dark:bg-gray-800"
-		>
-			<div class="w-full">
-				<h3 class="text-base font-normal text-gray-500 dark:text-gray-400">
-					주간 추이
-				</h3>
-				<span
-					class="text-2xl font-bold leading-none text-gray-900 sm:text-3xl dark:text-white"
-				>2,340건</span
-				>
-			</div>
-			<div class="w-full" id="new-products-chart"></div>
-		</div>
-		<div
-			class="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:border-gray-700 sm:p-6 dark:bg-gray-800"
-		>
-			<div class="w-full">
-				<h3 class="text-base font-normal text-gray-500 dark:text-gray-400">
-					추천 부탁드립니다
-				</h3>
-				<span
-					class="text-2xl font-bold leading-none text-gray-900 sm:text-3xl dark:text-white"
-				>2,340</span
-				>
-			</div>
-			<div class="w-full" id="week-signups-chart"></div>
-		</div>
-		<div
-			class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800"
-		>
-			<div class="w-full">
-				<h3 class="mb-2 text-base font-normal text-gray-500 dark:text-gray-400">
-					구매 컬럼 추이
-				</h3>
-				<div class="flex items-center mb-2">
-					<div class="w-16 text-sm font-medium dark:text-white">01</div>
-					<div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-						<div
-							class="bg-primary-600 h-2.5 rounded-full dark:bg-primary-500"
-							style="width: 18%"
-						>
+				<div class="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:border-gray-700 sm:p-4 dark:bg-gray-800">
+					<div>
+						<h3 class="text-gray-500 dark:text-gray-400">미정입니다</h3>
+						<span class="flex items-center mr-1.5 text-sm text-green-500 dark:text-green-400">
+																		<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+																			<path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+																		</svg>
+																		<h4 class="text-xl font-bold dark:text-white">234,124</h4>원
+																	</span>
+					</div>
+				</div>
+				<!-- Terminal Donut chart -->
+				<div class="grid gap-3">
+					<div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800  xl:mb-0 col-span-1">
+						<h3 class="text-lg font-medium text-gray-900 dark:text-white">단말기 동작현황</h3>
+						<div class="items-center" id="status-by-terminal"></div>
+						<!-- Card Footer -->
+						<div class="flex items-center justify-between pt-2 lg:justify-evenly sm:pt-4 flex">
+							<div>
+								<h3 class="text-gray-500 dark:text-gray-400">동작중</h3>
+								<h4 class="text-xl font-bold dark:text-white">100 대</h4>
+							</div>
+							<div>
+								<h3 class="text-gray-500 dark:text-gray-400">미가동</h3>
+								<h4 class="text-xl font-bold dark:text-white">45 대</h4>
+							</div>
 						</div>
 					</div>
 				</div>
-				<div class="flex items-center mb-2">
-					<div class="w-16 text-sm font-medium dark:text-white">02</div>
-					<div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-						<div
-							class="bg-primary-600 h-2.5 rounded-full dark:bg-primary-500"
-							style="width: 15%"
-						>
-						</div>
-					</div>
-				</div>
-				<div class="flex items-center mb-2">
-					<div class="w-16 text-sm font-medium dark:text-white">03</div>
-					<div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-						<div
-							class="bg-primary-600 h-2.5 rounded-full dark:bg-primary-500"
-							style="width: 60%"
-						>
-						</div>
-					</div>
-				</div>
-				<div class="flex items-center mb-2">
-									<div class="w-16 text-sm font-medium dark:text-white">04</div>
-									<div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-										<div
-											class="bg-primary-600 h-2.5 rounded-full dark:bg-primary-500"
-											style="width: 30%"
-										>
-										</div>
-									</div>
-								</div>
-				<div class="flex items-center mb-2">
-									<div class="w-16 text-sm font-medium dark:text-white">05</div>
-									<div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-										<div
-											class="bg-primary-600 h-2.5 rounded-full dark:bg-primary-500"
-											style="width: 40%"
-										>
-										</div>
-									</div>
-								</div>
-			</div>
-			<div id="traffic-channels-chart" class="w-full"></div>
-		</div>
-	</div>
-	<!-- 4 Column -->
-	<div class="grid grid-cols-1 my-4 xl:grid-cols-4 xl:gap-4">
-		<!-- Chart -->
-		<div
-			class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800  xl:mb-0 col-span-1">
-			<div
-				class="flex items-center justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700"
-			>
-				<div>
-					<span class="text-lg font-medium text-gray-900 dark:text-white">단말기 동작 상태현황</span>
-				</div>
-			</div>
-			<div id="status-by-terminal"></div>
-			<!-- Card Footer -->
-			<div
-				class="flex items-center justify-between pt-2 lg:justify-evenly sm:pt-4"
-			>
-				<div>
-					<h3 class="text-gray-500 dark:text-gray-400">동작중</h3>
-					<h4 class="text-xl font-bold dark:text-white">100 대</h4>
-				</div>
-				<div>
-					<h3 class="text-gray-500 dark:text-gray-400">미가동</h3>
-					<h4 class="text-xl font-bold dark:text-white">45 대</h4>
-				</div>
-			</div>
-		</div>
-		<!-- Activity Card -->
-		<div
-			class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800 xl:mb-0">
-			<div class="flex items-center justify-between mb-4">
-				<h3 class="text-lg font-medium text-gray-900 dark:text-white">
-					공지사항
-				</h3>
-				<a
-					href="#"
-					class="inline-flex items-center p-2 text-sm font-medium rounded-lg text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700"
-				>
-					전체보기
-				</a>
-			</div>
-			<ol class="relative border-l border-gray-200 dark:border-gray-700">
-				{
-					notices?.map((notice) =>
-						<li class="mb-4 ml-4" key={notice.id}>
-							<div
-								class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-800 dark:bg-gray-700"></div>
-							<time
-								class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">{notice.createdAt}</time>
-							<!--<h3 class="text-lg font-medium text-gray-900 dark:text-white">{notice.title}</h3>-->
-							<!-- 미표기 -->
-								<p class="text-base font-normal text-gray-900 dark:text-white">
-								 <!--dangerouslySetInnerHTML={{__html: notice.content.slice(0, 100)}}-->{notice.title}
-							</p>
-						</li>
-					)
-				}
-			</ol>
-		</div>
-		<div
-			class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800 xl:mb-0">
-			<div class="flex items-center justify-between mb-4">
-				<h3 class="text-lg font-medium text-gray-900 dark:text-white">
-					자주묻는질문
-				</h3>
-				<a
-					href="#"
-					class="inline-flex items-center p-2 text-sm font-medium rounded-lg text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700"
-				>
-					전체보기
-				</a>
-			</div>
-			<ol class="relative border-l border-gray-200 dark:border-gray-700">
-				{
-					notices?.map((notice) =>
-						<li class="mb-4 ml-4" key={notice.id}>
-							<div
-								class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-800 dark:bg-gray-700"></div>
-							<time
-								class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">{notice.createdAt}</time>
+				<!-- Activity Card -->
+				<div class="grid gap-3 w-full grid-cols-1">
+					<div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-4 dark:bg-gray-800 xl:mb-0">
+						<div class="flex items-center justify-between mb-2">
 							<h3 class="text-lg font-medium text-gray-900 dark:text-white">
-								{notice.title}
+								공지사항
 							</h3>
-							<!-- 미표기 -->
-							<p class="text-base font-normal text-gray-500 dark:text-gray-400"
-								 dangerouslySetInnerHTML={{__html: notice.content.slice(0, 100)}}>
-							</p>
-						</li>
-					)
-				}
-			</ol>
-		</div>
-		<!--Carousel widget -->
-		<div
-			class="px-4 py-1 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:px-6 dark:bg-gray-800">
-			<div id="gallery" class="relative w-full" data-carousel="slide">
-				<!-- Carousel wrapper -->
-				<div class="relative h-full overflow-hidden rounded-lg h-full" style="height: 500px;">
-					<!-- Item 1 -->
-					<div class="hidden duration-2700 ease-in-out" data-carousel-item>
-						<img src="https://image.ubcn.co.kr/vmms/20250516popup.png"
-								 class="absolute block w-auto h-full -translate-x-1/2 left-1/2"
-								 alt="">
+							<a
+								href="#"
+								class="inline-flex items-center p-2 text-sm font-medium rounded-lg text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700"
+							>
+								전체보기
+							</a>
+						</div>
+						<ol class="relative border-l border-gray-200 dark:border-gray-700">
+							{
+								notices?.map((notice) =>
+									<li class="mb-4 ml-4" key={notice.id}>
+										<div
+											class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-800 dark:bg-gray-700"></div>
+										<time
+											class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">{notice.createdAt}</time>
+										<!--<h3 class="text-lg font-medium text-gray-900 dark:text-white">{notice.title}</h3>-->
+										<!-- 미표기 -->
+										<p class="text-base font-normal text-gray-900 dark:text-white">
+											<!--dangerouslySetInnerHTML={{__html: notice.content.slice(0, 100)}}-->{notice.title}
+										</p>
+									</li>
+								)
+							}
+						</ol>
 					</div>
-					<!-- Item 2 -->
-					<div class="hidden duration-2700 ease-in-out" data-carousel-item="active">
-						<img src="https://image.ubcn.co.kr/vmms/Rental_service.jpg"
-								 class="absolute block w-auto h-full -translate-x-1/2 left-1/2"
-								 alt="">
-					</div>
-					<!-- Item 3 -->
-					<div class="hidden duration-2700 ease-in-out" data-carousel-item>
-						<img src="https://image.ubcn.co.kr/vmms/20250509popup.png"
-								 class="absolute block w-auto h-full -translate-x-1/2 left-1/2"
-								 alt="">
-					</div>
-					<!-- Item 4 -->
-					<div class="hidden duration-2700 ease-in-out" data-carousel-item>
-						<img src="https://image.ubcn.co.kr/vmms/20250508popup.png"
-								 class="absolute block w-auto h-full -translate-x-1/2 left-1/2"
-								 alt="">
-					</div>
-					<!-- Item 5 -->
-					<div class="hidden duration-2700 ease-in-out" data-carousel-item>
-						<img src="https://image.ubcn.co.kr/vmms/250410_Bingo쿠폰키오스크.png"
-								 class="absolute block w-auto h-full -translate-x-1/2 left-1/2"
-								 alt="">
+					<div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-4 dark:bg-gray-800 xl:mb-0">
+						<div class="flex items-center justify-between mb-2">
+							<h3 class="text-lg font-medium text-gray-900 dark:text-white">
+								자주묻는질문
+							</h3>
+							<a
+								href="#"
+								class="inline-flex items-center p-2 text-sm font-medium rounded-lg text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700"
+							>
+								전체보기
+							</a>
+						</div>
+						<ol class="relative border-l border-gray-200 dark:border-gray-700">
+							{
+								notices?.map((notice) =>
+									<li class="mb-4 ml-4" key={notice.id}>
+										<div
+											class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-800 dark:bg-gray-700"></div>
+										<time
+											class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">{notice.createdAt}</time>
+										<!--<h3 class="text-lg font-medium text-gray-900 dark:text-white">{notice.title}</h3>-->
+										<!-- 미표기 -->
+										<p class="text-base font-normal text-gray-900 dark:text-white">
+											<!--dangerouslySetInnerHTML={{__html: notice.content.slice(0, 100)}}-->{notice.title}
+										</p>
+									</li>
+								)
+							}
+						</ol>
 					</div>
 				</div>
-				<!-- Slider controls -->
-				<button type="button"
-								class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-								data-carousel-prev>
-				        <span
-									class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-				            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
-												 aria-hidden="true"
-												 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-				                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-															stroke-width="2" d="M5 1 1 5l4 4"/>
-				            </svg>
-				            <span class="sr-only">Previous</span>
-				        </span>
-				</button>
-				<button type="button"
-								class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-								data-carousel-next>
-				        <span
-									class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-				            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
-												 aria-hidden="true"
-												 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-				                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-															stroke-width="2" d="m1 9 4-4-4-4"/>
-				            </svg>
-				            <span class="sr-only">Next</span>
-				        </span>
-				</button>
+			</div>
+			<div class="grid gap-3 w-full grid-cols-1">
+				<!--Ad widget -->
+				<div class="relative overflow-hidden w-full items-center justify-between bg-white border border-gray-200 rounded-lg dark:border-gray-700 dark:bg-gray-800" data-carousel="slide" id="gallery">
+					<div class="relative overflow-hidden rounded-lg h-full">
+						<!-- Item 1 -->
+						<div class="overflow-hidden hidden duration-700 ease-out" data-carousel-item="active">
+							<a href="#">
+								<img src="https://image.ubcn.co.kr/vmms/20250516popup.png" class="absolute block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="">
+							</a>
+						</div>
+						<!-- Item 2 -->
+						<div class="overflow-hidden  hidden duration-700 ease-out" data-carousel-item>
+							<a href="#">
+								<img src="https://image.ubcn.co.kr/vmms/Rental_service.jpg" class="absolute block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="">
+							</a>
+						</div>
+						<!-- Item 3 -->
+						<div class="overflow-hidden  hidden duration-700 ease-out" data-carousel-item>
+							<a href="#">
+								<img src="https://image.ubcn.co.kr/vmms/20250508popup.png" class="absolute block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="">
+							</a>
+						</div>
+					</div>
+					<!-- Slider controls -->
+					<button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
+									        <span class="inline-flex items-center justify-center w-10 h-10 bg-opacity-50 rounded-full bg-gray-500 dark:bg-gray-800/30 group-hover:bg-gray-600 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+									            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+									                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+									            </svg>
+									            <span class="sr-only">Previous</span>
+									        </span>
+					</button>
+					<button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
+									        <span class="inline-flex items-center justify-center w-10 h-10 bg-opacity-50 rounded-full bg-gray-500 dark:bg-gray-800/30 group-hover:bg-gray-600 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+									            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+									                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+									            </svg>
+									            <span class="sr-only">Next</span>
+									        </span>
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
 
 <script>
-	import './DashBoard.client.js';
-</script>
+	//import './DashBoard.client.js';
+	import {getDayOfTimeSalesChart, getWeekSalesChart} from "./DashBoard.client.js";
 
+	//const getDayOfTimeSalesList = await fetch(`${API_URL}/list/todaySalesList`).then((response) => response.json());
+	const getDayOfTimeSalesList =
+		{
+			today: [4900, 2500, 6700, 8900, 5600, 9900, 6000, 10900, 84000, 75900, 90000, 82000, 60100, 99700, 81000, 92400, 83100, 77300, 62500, 79900, 47300, 70200, 16000, 9800,],
+			yesterday: [6000, 8300, 1400, 900, 5600, 7000, 6400, 18400, 65500, 73300, 91100, 85000, 99100, 78700, 60000, 79900, 69800, 87600, 78000, 62100, 40800, 85000, 23000, 7100,],
+		};
+	const getWeekSalesList = {
+		amounts: [981000, 223000, 510000, 614000, 398000, 650000, 875000,],
+		counts: [981, 223, 510, 614, 398, 650, 875,]
+	};
+
+	getDayOfTimeSalesChart(getDayOfTimeSalesList.today, getDayOfTimeSalesList.yesterday);
+	getWeekSalesChart(getWeekSalesList.amounts, getWeekSalesList.counts);
+
+</script>
+<style is:inline>
+	@media (min-width: 640px) {
+		/*실제로는 hidden*/
+		#gallery img {
+			width: 50% !important;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		/*실제로는 hidden*/
+		#gallery img {
+			width: 50% !important;
+		}
+	}
+
+	@media (min-width: 1280px) {
+		#gallery img {
+			width: 50% !important;
+		}
+	}
+
+	@media (min-width: 1536px) {
+		#gallery img {
+			width: 90% !important;
+		}
+	}
+</style>
 <style is:global>
 	/* chart styles */
 	.apexcharts-tooltip {

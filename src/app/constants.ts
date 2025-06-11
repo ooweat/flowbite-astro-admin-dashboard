@@ -1,4 +1,4 @@
-export const API_URL = `https://devapi.ubcn.co.kr:17881`;
+export const API_URL = `https://mvmmsapi.ubcn.co.kr:8180`;
 
 export const REMOTE_ASSETS_BASE_URL = `https://demo.ubcn.co.kr`;
 export const SITE_TITLE = 'BackOffice';
