@@ -27,7 +27,7 @@ module.exports = {
 			},
 			fontFamily: {
 				sans: [
-					'Spoqa Han Sans Neo',
+					'Toss Product Sans',
 					'Inter',
 					'ui-sans-serif',
 					'system-ui',
@@ -45,7 +45,7 @@ module.exports = {
 					'Noto Color Emoji',
 				],
 				body: [
-					'Spoqa Han Sans Neo',
+					'Toss Product Sans',
 					'Inter',
 					'ui-sans-serif',
 					'system-ui',
