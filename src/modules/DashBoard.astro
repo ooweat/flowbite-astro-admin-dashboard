@@ -10,7 +10,7 @@ const noticeList = await fetchApi(`${API_URL}/cs`, {type: "N"})
 const noticeList2 = await fetchApi(`${API_URL}/cs`, {type: "F"})
 .then((response) => response.json());
 
-const notices = await noticeList?.noticeList.filter((item, idx) => idx < 2).map((notice) => {
+const notices = await noticeList?.noticeList.filter((item, idx) => idx < 3).map((notice) => {
 	return {
 		title: notice.title,
 		content: notice.detail,
@@ -76,89 +76,87 @@ const numberWithCommas = (x: number): string => {
 			</div>
 		</div>
 		<!-- Right widget -->
-		<div class="grid gap-3 w-full grid-cols-1 xl:grid-cols-2 2xl:grid-cols-2">
+		<div class="grid gap-3 w-full">
 			<div class="grid gap-3 w-full grid-cols-1 xl:grid-cols-2 2xl:grid-cols-2">
 				<div class="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:border-gray-700 sm:p-4 dark:bg-gray-800">
 					<div>
 						<h3 class="text-gray-500 dark:text-gray-400">오늘 정산 예정 금액</h3>
 						<span class="flex items-center mr-1.5 text-sm text-green-500 dark:text-green-400">
-										<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-											<path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
-										</svg>
-										<h4 class="text-xl font-bold dark:text-white">1,234,124</h4>원
-									</span>
+																							<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+																								<path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+																							</svg>
+																							<h4 class="text-xl font-bold dark:text-white">1,234,124</h4>원
+																						</span>
 					</div>
 				</div>
 				<div class="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:border-gray-700 sm:p-4 dark:bg-gray-800">
 					<div>
 						<h3 class="text-gray-500 dark:text-gray-400">미정입니다</h3>
 						<span class="flex items-center mr-1.5 text-sm text-green-500 dark:text-green-400">
-																		<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-																			<path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
-																		</svg>
-																		<h4 class="text-xl font-bold dark:text-white">234,124</h4>원
-																	</span>
+																															<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+																																<path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+																															</svg>
+																															<h4 class="text-xl font-bold dark:text-white">234,124</h4>원
+																														</span>
 					</div>
 				</div>
 				<!-- Terminal Donut chart -->
-				<div class="grid gap-3">
-					<div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800  xl:mb-0 col-span-1">
-						<h3 class="text-lg font-medium text-gray-900 dark:text-white">단말기 동작현황</h3>
+				<div class="gap-3 w-full">
+					<div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-4 dark:bg-gray-800 xl:mb-0">
+						<h3 class="text-lg font-medium text-gray-900 dark:text-white">단말기 상태정보 수신현황</h3>
 						<div class="items-center" id="status-by-terminal"></div>
-						<!-- Card Footer -->
-						<div class="flex items-center justify-between pt-2 lg:justify-evenly sm:pt-4 flex">
-							<div>
-								<h3 class="text-gray-500 dark:text-gray-400">동작중</h3>
-								<h4 class="text-xl font-bold dark:text-white">100 대</h4>
+					</div>
+				</div>
+				<!--Ad widget -->
+				<div class="grid gap-3 w-full">
+					<div class="relative overflow-hidden w-full items-center justify-between bg-white border border-gray-200 rounded-lg dark:border-gray-700 dark:bg-gray-800" data-carousel="slide" id="gallery">
+						<div class="relative overflow-hidden rounded-lg h-full">
+							<!-- Item 1 -->
+							<div class="overflow-hidden hidden duration-700 ease-out" data-carousel-item="active">
+								<a href="#">
+									<img src="https://image.ubcn.co.kr/vmms/20250516popup.png" class="absolute block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="">
+								</a>
 							</div>
-							<div>
-								<h3 class="text-gray-500 dark:text-gray-400">미가동</h3>
-								<h4 class="text-xl font-bold dark:text-white">45 대</h4>
+							<!-- Item 2 -->
+							<div class="overflow-hidden  hidden duration-700 ease-out" data-carousel-item>
+								<a href="#">
+									<img src="https://image.ubcn.co.kr/vmms/Rental_service.jpg" class="absolute block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="">
+								</a>
+							</div>
+							<!-- Item 3 -->
+							<div class="overflow-hidden  hidden duration-700 ease-out" data-carousel-item>
+								<a href="#">
+									<img src="https://image.ubcn.co.kr/vmms/20250508popup.png" class="absolute block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="">
+								</a>
 							</div>
 						</div>
+						<!-- Slider controls -->
+						<button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
+																										        <span class="inline-flex items-center justify-center w-10 h-10 bg-opacity-50 rounded-full bg-gray-500 dark:bg-gray-800/30 group-hover:bg-gray-600 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+																										            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+																										                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+																										            </svg>
+																										            <span class="sr-only">Previous</span>
+																										        </span>
+						</button>
+						<button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
+																										        <span class="inline-flex items-center justify-center w-10 h-10 bg-opacity-50 rounded-full bg-gray-500 dark:bg-gray-800/30 group-hover:bg-gray-600 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+																										            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+																										                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+																										            </svg>
+																										            <span class="sr-only">Next</span>
+																										        </span>
+						</button>
 					</div>
 				</div>
 				<!-- Activity Card -->
-				<div class="grid gap-3 w-full grid-cols-1">
+				<div class="grid gap-3 w-full">
 					<div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-4 dark:bg-gray-800 xl:mb-0">
 						<div class="flex items-center justify-between mb-2">
 							<h3 class="text-lg font-medium text-gray-900 dark:text-white">
 								공지사항
 							</h3>
-							<a
-								href="#"
-								class="inline-flex items-center p-2 text-sm font-medium rounded-lg text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700"
-							>
-								전체보기
-							</a>
-						</div>
-						<ol class="relative border-l border-gray-200 dark:border-gray-700">
-							{
-								notices?.map((notice) =>
-									<li class="mb-4 ml-4" key={notice.id}>
-										<div
-											class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-800 dark:bg-gray-700"></div>
-										<time
-											class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">{notice.createdAt}</time>
-										<!--<h3 class="text-lg font-medium text-gray-900 dark:text-white">{notice.title}</h3>-->
-										<!-- 미표기 -->
-										<p class="text-base font-normal text-gray-900 dark:text-white">
-											<!--dangerouslySetInnerHTML={{__html: notice.content.slice(0, 100)}}-->{notice.title}
-										</p>
-									</li>
-								)
-							}
-						</ol>
-					</div>
-					<div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-4 dark:bg-gray-800 xl:mb-0">
-						<div class="flex items-center justify-between mb-2">
-							<h3 class="text-lg font-medium text-gray-900 dark:text-white">
-								자주묻는질문
-							</h3>
-							<a
-								href="#"
-								class="inline-flex items-center p-2 text-sm font-medium rounded-lg text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700"
-							>
+							<a href="#" class="inline-flex items-center p-2 text-sm font-medium rounded-lg text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700">
 								전체보기
 							</a>
 						</div>
@@ -181,48 +179,36 @@ const numberWithCommas = (x: number): string => {
 						</ol>
 					</div>
 				</div>
-			</div>
-			<div class="grid gap-3 w-full grid-cols-1">
-				<!--Ad widget -->
-				<div class="relative overflow-hidden w-full items-center justify-between bg-white border border-gray-200 rounded-lg dark:border-gray-700 dark:bg-gray-800" data-carousel="slide" id="gallery">
-					<div class="relative overflow-hidden rounded-lg h-full">
-						<!-- Item 1 -->
-						<div class="overflow-hidden hidden duration-700 ease-out" data-carousel-item="active">
-							<a href="#">
-								<img src="https://image.ubcn.co.kr/vmms/20250516popup.png" class="absolute block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="">
-							</a>
-						</div>
-						<!-- Item 2 -->
-						<div class="overflow-hidden  hidden duration-700 ease-out" data-carousel-item>
-							<a href="#">
-								<img src="https://image.ubcn.co.kr/vmms/Rental_service.jpg" class="absolute block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="">
-							</a>
-						</div>
-						<!-- Item 3 -->
-						<div class="overflow-hidden  hidden duration-700 ease-out" data-carousel-item>
-							<a href="#">
-								<img src="https://image.ubcn.co.kr/vmms/20250508popup.png" class="absolute block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="">
-							</a>
-						</div>
-					</div>
-					<!-- Slider controls -->
-					<button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
-									        <span class="inline-flex items-center justify-center w-10 h-10 bg-opacity-50 rounded-full bg-gray-500 dark:bg-gray-800/30 group-hover:bg-gray-600 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-									            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-									                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
-									            </svg>
-									            <span class="sr-only">Previous</span>
-									        </span>
-					</button>
-					<button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
-									        <span class="inline-flex items-center justify-center w-10 h-10 bg-opacity-50 rounded-full bg-gray-500 dark:bg-gray-800/30 group-hover:bg-gray-600 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-									            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-									                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-									            </svg>
-									            <span class="sr-only">Next</span>
-									        </span>
-					</button>
-				</div>
+				<div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-4 dark:bg-gray-800 xl:mb-0">
+										<div class="flex items-center justify-between mb-2">
+											<h3 class="text-lg font-medium text-gray-900 dark:text-white">
+												자주묻는질문
+											</h3>
+											<a
+												href="#"
+												class="inline-flex items-center p-2 text-sm font-medium rounded-lg text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700"
+											>
+												전체보기
+											</a>
+										</div>
+										<ol class="relative border-l border-gray-200 dark:border-gray-700">
+											{
+												notices?.map((notice) =>
+													<li class="mb-4 ml-4" key={notice.id}>
+														<div
+															class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-800 dark:bg-gray-700"></div>
+														<time
+															class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">{notice.createdAt}</time>
+														<!--<h3 class="text-lg font-medium text-gray-900 dark:text-white">{notice.title}</h3>-->
+														<!-- 미표기 -->
+														<p class="text-base font-normal text-gray-900 dark:text-white">
+															<!--dangerouslySetInnerHTML={{__html: notice.content.slice(0, 100)}}-->{notice.title}
+														</p>
+													</li>
+												)
+											}
+										</ol>
+									</div>
 			</div>
 		</div>
 	</div>

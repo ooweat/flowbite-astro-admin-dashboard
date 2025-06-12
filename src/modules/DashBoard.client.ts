@@ -2,6 +2,8 @@
 
 import ApexCharts from 'apexcharts';
 
+/*시간대별 매출액*/
+//시간대별 매출액 차트
 export const getDayOfTimeSalesChart = (todays: number[], yesterdays: number[]) => {
 	const chart = new ApexCharts(
 		document.getElementById('day-of-time-sales-chart'),
@@ -9,7 +11,7 @@ export const getDayOfTimeSalesChart = (todays: number[], yesterdays: number[]) =
 	);
 	chart.render();
 }
-
+//시간대별 매출액 옵션
 const getDayOfTimeSalesChartOptions = (todays: number[], yesterdays: number[]) => {
 	let mainChartColors = {
 		borderColor: '#F3F4F6',
@@ -26,7 +28,7 @@ const getDayOfTimeSalesChartOptions = (todays: number[], yesterdays: number[]) =
 			opacityTo: 0.15,
 		};
 	}
-	
+
 	return {
 		chart: {
 			height: 250,
@@ -143,7 +145,10 @@ const getDayOfTimeSalesChartOptions = (todays: number[], yesterdays: number[]) =
 		],
 	};
 };
+/*시간대별 매출액*/
 
+/*최근 7일 매출액*/
+//최근 7일 매출액 차트
 export const getWeekSalesChart = (amounts: number[], counts: number[]) => {
 	const chart = new ApexCharts(
 		document.getElementById('week-sales-chart'),
@@ -151,7 +156,7 @@ export const getWeekSalesChart = (amounts: number[], counts: number[]) => {
 	);
 	chart.render();
 }
-
+//최근 7일 매출액 옵션
 const getWeekSalesChartOptions = (amounts: number[], counts: number[]) => {
 	let mainChartColors = {
 		borderColor: '#F3F4F6',
@@ -168,7 +173,7 @@ const getWeekSalesChartOptions = (amounts: number[], counts: number[]) => {
 			opacityTo: 0.15,
 		};
 	}
-	
+
 	return {
 		chart: {
 			height: 250,
@@ -276,392 +281,107 @@ const getWeekSalesChartOptions = (amounts: number[], counts: number[]) => {
 			},
 		],
 		legend: {
-					fontSize: '13px',
-					fontWeight: 400,
-					fontFamily: 'Inter, sans-serif',
-					position: 'right',
-					labels: {
-						colors: [mainChartColors.labelColor],
-					},
-					itemMargin: {
-						horizontal: 0,
-					},
-				},
-	};
-};
-
-
-if (document.getElementById('new-products-chart')) {
-	const options = {
-		colors: ['#1A56DB', '#FDBA8C'],
-		series: [
-			{
-				name: '건수',
-				color: '#1A56DB',
-				data: [
-					{ x: '일', y: 170 },
-					{ x: '월', y: 180 },
-					{ x: '화', y: 164 },
-					{ x: '수', y: 145 },
-					{ x: '목', y: 194 },
-					{ x: '금', y: 170 },
-					{ x: '토', y: 155 },
-				],
-			},
-		],
-		chart: {
-			type: 'bar',
-			height: '140px',
+			fontSize: '13px',
+			fontWeight: 400,
 			fontFamily: 'Inter, sans-serif',
-			foreColor: '#4B5563',
-			toolbar: {
-				show: false,
-			},
-		},
-		plotOptions: {
-			bar: {
-				columnWidth: '90%',
-				borderRadius: 3,
-			},
-		},
-		tooltip: {
-			shared: false,
-			intersect: false,
-			style: {
-				fontSize: '14px',
-				fontFamily: 'Inter, sans-serif',
-			},
-		},
-		states: {
-			hover: {
-				filter: {
-					type: 'darken',
-					value: 1,
-				},
-			},
-		},
-		stroke: {
-			show: true,
-			width: 5,
-			colors: ['transparent'],
-		},
-		grid: {
-			show: false,
-		},
-		dataLabels: {
-			enabled: false,
-		},
-		legend: {
-			show: false,
-		},
-		xaxis: {
-			categories: ['일', '월', '화', '수', '목', '금', '토',],
+			position: 'right',
 			labels: {
-				style: {
-					colors: '#4B5563',
-					fontSize: '14px',
-					fontWeight: 600,
-				},
+				colors: [mainChartColors.labelColor],
 			},
-		},
-		yaxis: {
-			show: false,
-		},
-		fill: {
-			opacity: 1,
-		},
-	};
-
-	const chart = new ApexCharts(
-		document.getElementById('new-products-chart'),
-		options,
-	);
-	chart.render();
-}
-
-if (document.getElementById('sales-by-category')) {
-	const options = {
-		colors: ['#1A56DB', '#FDBA8C'],
-		series: [
-			{
-				name: 'Desktop PC',
-				color: '#1A56DB',
-				data: [
-					{ x: '일', y: 170 },
-					{ x: '월', y: 180 },
-					{ x: '화', y: 164 },
-					{ x: '수', y: 145 },
-					{ x: '목', y: 194 },
-					{ x: '금', y: 170 },
-					{ x: '토', y: 155 },
-				],
+			itemMargin: {
+				horizontal: 0,
 			},
-			{
-				name: 'Phones',
-				color: '#FDBA8C',
-				data: [
-					{ x: '일', y: 120 },
-					{ x: '월', y: 294 },
-					{ x: '화', y: 167 },
-					{ x: '수', y: 179 },
-					{ x: '목', y: 245 },
-					{ x: '금', y: 182 },
-					{ x: '토', y: 143 },
-				],
-			},
-			{
-				name: 'Gaming/Console',
-				color: '#17B0BD',
-				data: [
-					{ x: '일', y: 220 },
-					{ x: '월', y: 194 },
-					{ x: '화', y: 217 },
-					{ x: '수', y: 279 },
-					{ x: '목', y: 215 },
-					{ x: '금', y: 263 },
-					{ x: '토', y: 183 },
-				],
-			},
-		],
-		chart: {
-			type: 'bar',
-			height: '420px',
-			fontFamily: 'Inter, sans-serif',
-			foreColor: '#4B5563',
-			toolbar: {
-				show: false,
-			},
-		},
-		plotOptions: {
-			bar: {
-				columnWidth: '90%',
-				borderRadius: 3,
-			},
-		},
-		tooltip: {
-			shared: true,
-			intersect: false,
-			style: {
-				fontSize: '14px',
-				fontFamily: 'Inter, sans-serif',
-			},
-		},
-		states: {
-			hover: {
-				filter: {
-					type: 'darken',
-					value: 1,
-				},
-			},
-		},
-		stroke: {
-			show: true,
-			width: 5,
-			colors: ['transparent'],
-		},
-		grid: {
-			show: false,
-		},
-		dataLabels: {
-			enabled: false,
-		},
-		legend: {
-			show: false,
-		},
-		xaxis: {
-			floating: false,
-			labels: {
-				show: false,
-			},
-			axisBorder: {
-				show: false,
-			},
-			axisTicks: {
-				show: false,
-			},
-		},
-		yaxis: {
-			show: false,
-		},
-		fill: {
-			opacity: 1,
-		},
-	};
-
-	const chart = new ApexCharts(
-		document.getElementById('sales-by-category'),
-		options,
-	);
-	chart.render();
-}
-
-const getSignupsChartOptions = () => {
-	let signupsChartColors = {
-		backgroundBarColors: [
-			'#E5E7EB',
-			'#E5E7EB',
-			'#E5E7EB',
-			'#E5E7EB',
-			'#E5E7EB',
-			'#E5E7EB',
-			'#E5E7EB',
-		],
-	};
-
-	if (document.documentElement.classList.contains('dark')) {
-		signupsChartColors = {
-			backgroundBarColors: [
-				'#374151',
-				'#374151',
-				'#374151',
-				'#374151',
-				'#374151',
-				'#374151',
-				'#374151',
-			],
-		};
-	}
-
-	return {
-		series: [
-			{
-				name: '건수',
-				data: [1334, 2435, 1753, 1328, 1155, 1632, 1336],
-			},
-		],
-		labels: ['일', '월', '화', '수', '목', '금', '토',],
-		chart: {
-			type: 'bar',
-			height: '140px',
-			foreColor: '#4B5563',
-			fontFamily: 'Inter, sans-serif',
-			toolbar: {
-				show: false,
-			},
-		},
-		theme: {
-			monochrome: {
-				enabled: true,
-				color: '#1A56DB',
-			},
-		},
-		plotOptions: {
-			bar: {
-				columnWidth: '25%',
-				borderRadius: 3,
-				colors: {
-					backgroundBarColors: signupsChartColors.backgroundBarColors,
-					backgroundBarRadius: 3,
-				},
-			},
-			dataLabels: {
-				hideOverflowingLabels: false,
-			},
-		},
-		xaxis: {
-			categories: ['일', '월', '화', '수', '목', '금', '토',],
-			labels: {
-				style: {
-					colors: '#4B5563',
-					fontSize: '14px',
-					fontWeight: 600,
-				},
-			},
-		},
-		/*xaxis: {
-			floating: false,
-			labels: {
-				show: false,
-			},
-			axisBorder: {
-				show: false,
-			},
-			axisTicks: {
-				show: false,
-			},
-		},*/
-		tooltip: {
-			shared: true,
-			intersect: false,
-			style: {
-				fontSize: '14px',
-				fontFamily: 'Inter, sans-serif',
-			},
-		},
-		states: {
-			hover: {
-				filter: {
-					type: 'darken',
-					value: 0.8,
-				},
-			},
-		},
-		fill: {
-			opacity: 1,
-		},
-		yaxis: {
-			show: false,
-		},
-		grid: {
-			show: false,
-		},
-		dataLabels: {
-			enabled: false,
-		},
-		legend: {
-			show: false,
 		},
 	};
 };
+/*최근 7일 매출액*/
 
-if (document.getElementById('week-signups-chart')) {
-	const chart = new ApexCharts(
-		document.getElementById('week-signups-chart'),
-		getSignupsChartOptions(),
-	);
-	chart.render();
-
-	// init again when toggling dark mode
-	document.addEventListener('dark-mode', () => {
-		chart.updateOptions(getSignupsChartOptions());
-	});
-}
-
+/*단말기 상태정보 수신 현황*/
+//단말기 상태정보 수신 현황
 const getStatusAliveByTerminal = () => {
-	let trafficChannelsChartColors = {
-				strokeColor: '#ffffff',
-			};
-
-	if (document.documentElement.classList.contains('dark')) {
-		trafficChannelsChartColors = {
-			strokeColor: '#1f2937',
-		};
-	}
-	
 	return {
 		series: [100, 45],
-		labels: ['정상', '비정상'],
-		colors: ['#16BDCA', '#FDBA8C'],
+		colors: ['#1A56DB', '#FDBA8C'],
 		chart: {
-			type: 'donut',
-			height: 200,
-			fontFamily: 'Inter, sans-serif',
-			toolbar: {
-				show: false,
-			},
+			height: 300,
+			width: "100%",
+			type: "donut",
 		},
-		responsive: [
-			{
-				breakpoint: 300,
-				options: {
-					chart: {
-						height: 200,
+		stroke: {
+			colors: ["transparent"],
+			lineCap: "",
+		},
+		plotOptions: {
+			pie: {
+				donut: {
+					labels: {
+						show: true,
+						name: {
+							show: true,
+							fontFamily: "Inter, sans-serif",
+							offsetY: 20,
+						},
+						total: {
+							showAlways: true,
+							show: true,
+							fontFamily: "Inter, sans-serif",
+							formatter: function (w: any) {
+								const sum = w.globals.seriesTotals.reduce((a: any, b: any) => {
+									return a + b
+								}, 0)
+								return ' ' + sum + '대'
+							},
+						},
+						value: {
+							show: true,
+							fontFamily: "Inter, sans-serif",
+							offsetY: -20,
+							formatter: function (value: string) {
+								return value + ""
+							},
+						},
 					},
+					size: "80%",
 				},
 			},
-		],
-		stroke: {
-			colors: [trafficChannelsChartColors.strokeColor],
+		},
+		grid: {
+			padding: {
+				top: -2,
+			},
+		},
+		labels: ["수신", "미수신"],
+		dataLabels: {
+			enabled: false,
+			// offsetX: 10,
+			style: {
+				fontSize: '14px',
+				fontFamily: 'Inter, sans-serif',
+			},
+		},
+		legend: {
+			position: "bottom",
+			fontFamily: "Inter, sans-serif",
+		},
+		yaxis: {
+			labels: {
+				formatter: function (value: string) {
+					return value + ""
+				},
+			},
+		},
+		xaxis: {
+			labels: {
+				formatter: function (value: string) {
+					return value + ""
+				},
+			},
+			axisTicks: {
+				show: false,
+			},
+			axisBorder: {
+				show: false,
+			},
 		},
 		states: {
 			hover: {
@@ -677,34 +397,24 @@ const getStatusAliveByTerminal = () => {
 			fillSeriesColor: false,
 			inverseOrder: true,
 			style: {
-				fontSize: '14px',
+				fontSize: '13px',
 				fontFamily: 'Inter, sans-serif',
 			},
 			x: {
 				show: true,
-				formatter(_: any, {seriesIndex, w}: any) {
+				formatter(_: string, {seriesIndex, w}: any) {
 					const label = w.config.labels[seriesIndex];
 					return label;
 				},
 			},
 			y: {
-				formatter(value: string) {
+				formatter(value: number) {
 					return `${value} 대`;
 				},
 			},
 		},
-		grid: {
-			show: false,
-		},
-		dataLabels: {
-			enabled: false,
-		},
-		legend: {
-			show: false,
-		},
-	};
-};
-
+	}
+}
 if (document.getElementById('status-by-terminal')) {
 	const chart = new ApexCharts(
 		document.getElementById('status-by-terminal'),
@@ -716,4 +426,103 @@ if (document.getElementById('status-by-terminal')) {
 	document.addEventListener('dark-mode', () => {
 		chart.updateOptions(getStatusAliveByTerminal());
 	});
+}
+
+
+const getMonthlySalesChart = {
+	series: [
+		{
+			name: "Income",
+			color: "#31C48D",
+			data: ["1420", "1620", "1820", "1420", "1650", "2120"],
+		},
+		{
+			name: "Expense",
+			data: ["788", "810", "866", "788", "1100", "1200"],
+			color: "#F05252",
+		}
+	],
+	chart: {
+		sparkline: {
+			enabled: false,
+		},
+		type: "bar",
+		width: "100%",
+		height: 400,
+		toolbar: {
+			show: false,
+		}
+	},
+	fill: {
+		opacity: 1,
+	},
+	plotOptions: {
+		bar: {
+			horizontal: true,
+			columnWidth: "100%",
+			borderRadiusApplication: "end",
+			borderRadius: 6,
+			dataLabels: {
+				position: "top",
+			},
+		},
+	},
+	legend: {
+		show: true,
+		position: "bottom",
+	},
+	dataLabels: {
+		enabled: false,
+	},
+	tooltip: {
+		shared: true,
+		intersect: false,
+		formatter: function (value) {
+			return "$" + value
+		}
+	},
+	xaxis: {
+		labels: {
+			show: true,
+			style: {
+				fontFamily: "Inter, sans-serif",
+				cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+			},
+			formatter: function (value) {
+				return "$" + value
+			}
+		},
+		categories: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+		axisTicks: {
+			show: false,
+		},
+		axisBorder: {
+			show: false,
+		},
+	},
+	yaxis: {
+		labels: {
+			show: true,
+			style: {
+				fontFamily: "Inter, sans-serif",
+				cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+			}
+		}
+	},
+	grid: {
+		show: true,
+		strokeDashArray: 4,
+		padding: {
+			left: 2,
+			right: 2,
+			top: -20
+		},
+	},
+	fill: {
+		opacity: 1,
+	}
+}
+if (document.getElementById("bar-chart") && typeof ApexCharts !== 'undefined') {
+	const chart = new ApexCharts(document.getElementById("bar-chart"), getMonthlySalesChart);
+	chart.render();
 }
