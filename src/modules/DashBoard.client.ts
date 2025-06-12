@@ -65,7 +65,7 @@ const getDayOfTimeSalesChartOptions = (todays: number[], yesterdays: number[]) =
 			strokeDashArray: 1,
 			padding: {
 				left: 35,
-				bottom: 15,
+				bottom: -10,
 			},
 		},
 		series: [
@@ -93,7 +93,7 @@ const getDayOfTimeSalesChartOptions = (todays: number[], yesterdays: number[]) =
 			labels: {
 				style: {
 					colors: [mainChartColors.labelColor],
-					fontSize: '13px',
+					fontSize: '12px',
 					fontWeight: 400,
 				},
 				formatter(value: number) {
@@ -201,11 +201,10 @@ const getWeekSalesChartOptions = (amounts: number[], counts: number[]) => {
 			borderColor: mainChartColors.borderColor,
 			strokeDashArray: 1,
 			padding: {
-				left: 35,
-				bottom: 15,
+				bottom: -10,
 			},
 		},
-		colors: ['#1A56DB', '#FDBA8C'],
+		colors: ['#1A56DB', '#7E3BF2'],
 		series: [
 			{
 				name: "매출액",
@@ -268,7 +267,7 @@ const getWeekSalesChartOptions = (amounts: number[], counts: number[]) => {
 						fontWeight: 400,
 					},
 					formatter: (value: number) => {
-						return `${(value / 1000)}K 건`;
+						return `${(value / 1000)}K`;
 					},
 				},
 				opposite: true,
@@ -432,12 +431,12 @@ if (document.getElementById('status-by-terminal')) {
 const getMonthlySalesChart = {
 	series: [
 		{
-			name: "Income",
+			name: "매출액",
 			color: "#31C48D",
 			data: ["1420", "1620", "1820", "1420", "1650", "2120"],
 		},
 		{
-			name: "Expense",
+			name: "취소액",
 			data: ["788", "810", "866", "788", "1100", "1200"],
 			color: "#F05252",
 		}
@@ -477,8 +476,8 @@ const getMonthlySalesChart = {
 	tooltip: {
 		shared: true,
 		intersect: false,
-		formatter: function (value) {
-			return "$" + value
+		formatter: function (value: string) {
+			return value
 		}
 	},
 	xaxis: {
@@ -488,11 +487,11 @@ const getMonthlySalesChart = {
 				fontFamily: "Inter, sans-serif",
 				cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
 			},
-			formatter: function (value) {
-				return "$" + value
+			formatter: function (value: number) {
+				return `${(value / 1000)}K`;
 			}
 		},
-		categories: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+		categories: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
 		axisTicks: {
 			show: false,
 		},
@@ -513,16 +512,98 @@ const getMonthlySalesChart = {
 		show: true,
 		strokeDashArray: 4,
 		padding: {
-			left: 2,
 			right: 2,
 			top: -20
 		},
 	},
-	fill: {
-		opacity: 1,
+}
+if (document.getElementById("monthly-chart") && typeof ApexCharts !== 'undefined') {
+	const chart = new ApexCharts(document.getElementById("monthly-chart"), getMonthlySalesChart);
+	chart.render();
+}
+
+
+const getSalesPieChart = () => {
+	return {
+		series: [100, 50, 30, 1],
+		colors: ["#1C64F2", "#16BDCA", "#FDBA8C", "#E74694"],
+		chart: {
+			height: 300,
+			width: "100%",
+			type: "pie",
+		},
+		stroke: {
+			colors: ["white"],
+			lineCap: "",
+		},
+		plotOptions: {
+			pie: {
+				labels: {
+					show: true,
+				},
+				size: "100%",
+				dataLabels: {
+					offset: -25
+				}
+			},
+		},
+		labels: ["신용", "간편결제", "선불", "현금"],
+		dataLabels: {
+			enabled: true,
+			style: {
+				fontFamily: "Inter, sans-serif",
+			},
+		},
+		legend: {
+			position: "bottom",
+			fontFamily: "Inter, sans-serif",
+		},
+		yaxis: {
+			labels: {
+				formatter: function (value: number) {
+					return value + "%"
+				},
+			},
+		},
+		xaxis: {
+			labels: {
+				formatter: function (value: number) {
+					return value + "%"
+				},
+			},
+			axisTicks: {
+				show: false,
+			},
+			axisBorder: {
+				show: false,
+			},
+		},
+		tooltip: {
+			shared: true,
+			followCursor: false,
+			fillSeriesColor: false,
+			inverseOrder: true,
+			style: {
+				fontSize: '13px',
+				fontFamily: 'Inter, sans-serif',
+			},
+			x: {
+				show: true,
+				formatter(_: string, {seriesIndex, w}: any) {
+					const label = w.config.labels[seriesIndex];
+					return label;
+				},
+			},
+			y: {
+				formatter(value: number) {
+					return `${value} 건`;
+				},
+			},
+		},
 	}
 }
-if (document.getElementById("bar-chart") && typeof ApexCharts !== 'undefined') {
-	const chart = new ApexCharts(document.getElementById("bar-chart"), getMonthlySalesChart);
+
+if (document.getElementById("sales-pie-chart") && typeof ApexCharts !== 'undefined') {
+	const chart = new ApexCharts(document.getElementById("sales-pie-chart"), getSalesPieChart());
 	chart.render();
 }
